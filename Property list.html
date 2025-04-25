@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Listings</title>
+    <link href="./image/title.jpeg" rel="icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+        }
+    .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 1rem 2rem;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            position: sticky;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Logo */
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    /* Navigation Links */
+    .nav-links {
+        list-style: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-links li {
+        margin-left: 2rem;
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+    }
+
+    .nav-links li a {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        color: black;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+        color: #f64646;
+    }
+
+    /* Post Button */
+    .nav-links li .post-btn {
+        background-color: #f64646;
+        padding: 10px 15px;
+        border-radius: 8px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-links li .post-btn:hover {
+        background-color: #c43434;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .hamburger .line {
+        width: 30px;
+        height: 3px;
+        background-color: black;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+    }
+    
+
+    /* Responsive Styles */
+    @media (max-width: 1024px) {
+        .navbar {
+            padding: 1rem;
+            
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 75%;
+            background-color: rgba(0, 0, 0, 0.9);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: right 0.3s ease-in-out;
+        }
+
+        .nav-links.active {
+            right: 0;
+        }
+
+        .nav-links li {
+            margin: 1.5rem 0;
+        }
+
+        .nav-links li a {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-links li .post-btn {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+        }
+
+        .hamburger {
+            display: flex;
+            z-index: 1100;
+        }
+
+        /* Hamburger Animation */
+        .hamburger.active .line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        .hamburger.active .line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .line:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .nav-links {
+            width: 100%;
+        }
+
+        .nav-links li a {
+            font-size: 1rem;
+        }
+
+        .nav-links li .post-btn {
+            font-size: 1rem;
+            padding: 10px 16px;
+        }
+    }
+
+/*fghjkl*/
+.property-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    height: 100%;
+    margin-top: 5px; 
+}
+.property-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+.property-address {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 15px;
+}
+.property-image {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.property-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+.details-box {
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 15px 0;
+}
+.feature-label {
+    font-size: 12px;
+    color: #888;
+}
+.feature-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+.contact-btn {
+    background-color:#dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #333;
+    gap: 4px;
+    cursor: pointer;
+}
+.date-info {
+    text-align: right;
+    font-size: 12px;
+    color: #888;
+    line-height: 1.4;
+}
+
+/* Promo Card Styles */
+.promo-card {
+    background-color: #e6f2ff;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    height: 100%;
+    margin-top: 16px;
+}
+.promo-image {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.promo-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.promo-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.promo-location {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.promo-price {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.promo-details {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+.promo-icon {
+    margin-right: 8px;
+    font-size: 16px;
+}
+.location-icon {
+    color: #ff4d4d;
+}
+.price-icon {
+    color: #3611dc;
+}
+.star-icon {
+    color: #ffc107;
+}
+.home-icon {
+    color: #15ef18;
+}
+.promo-contact {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 15px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.navbar .btn-danger {
+    background-color: #ff4d4d;
+    border: none;
+}
+.search-container {
+    background-color: #1a3e83;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.search-container select option{
+background: transparent!important;
+}
+
+
+@media (max-width: 768px) {
+            .gallery-wrapper {
+                grid-template-columns: 1fr; /* Stack images */
+                grid-template-rows: auto;
+            }
+
+            .large {
+                grid-row: span 1;
+            }
+
+            .property-heading h1 {
+                font-size: 1.5rem;
+            }
+
+            .property-price {
+                font-size: 1.25rem;
+            }
+
+            .card-section-value {
+                font-size: 0.9rem;
+            }
+
+            .contact-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .popup img {
+                width: 80px;
+            }
+
+            .amenities-container .row .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .similar-property-card {
+                margin-bottom: 20px;
+            }
+        }
+            
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 0.75rem;
+            }
+
+            .logo img {
+                width: 80px;
+            }
+
+            .nav-links {
+                width: 100%;
+            }
+
+            .nav-links li a {
+                font-size: 1rem;
+            }
+
+            .nav-links li .post-btn {
+                font-size: 1rem;
+                padding: 10px 16px;
+            }
+
+            .property-address {
+                font-size: 0.85rem;
+            }
+
+            .gallery-wrapper img {
+                height: 150px;
+            }
+
+            .property-price {
+                font-size: 1.1rem;
+            }
+
+            .best-price {
+                font-size: 0.85rem;
+            }
+
+            .search-container {
+                padding: 15px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .search-container select {
+                flex: 1;
+                min-width: 70px;
+            }
+
+            .search-container input {
+                flex: 1;
+                min-width: 40%;
+            }
+
+            .promo-card {
+                display: none;
+            }
+
+            .date-info {
+                display: none;
+            }
+        }
+        .footer {
+    background-color: #ffffff;
+    color: #333;
+    padding-top: 5rem;
+    text-align: left;
+    margin-top: 60px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.footer-bottom {
+    display: flex;
+    justify-content: space-between; /* Aligns left and right */
+    align-items: center;
+    background-color: #0056b3; /* Adjust background color */
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 14px;
+}
+.footer-bottom span{
+    color: white;
+}
+.left {
+    margin-left: 50px;
+    text-align: left;
+}
+
+.right {
+    margin-right: 60px;
+    text-align: right;
+}
+/* Footer Sections */
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Search Box */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-box input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 160px;
+}
+
+.search-box button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #999;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background-color: #777;
+}
+
+/* Action Buttons */
+.action-button {
+    background-color: #999;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+}
+
+.action-button:hover {
+    background-color: #777;
+}
+
+/* Social Icons */
+.social-icons {
+    display: flex;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.action-button a{
+    text-decoration: none;
+    color: inherit;
+}
+/* Company Links */
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+    color: #333;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+            display: flex;
+            justify-content: space-between; /* Aligns left and right */
+            align-items: center;
+            background-color: #0056b3; /* Adjust background color */
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 14px;
+        }
+        .footer-bottom span{
+            color: white;
+        }
+        .left {
+            margin-left: 50px;
+            text-align: left;
+        }
+
+        .right {
+            margin-right: 60px;
+            text-align: right;
+        }
+ /* Responsive Design */
+ @media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .search-box {
+            justify-content: center;
+        }
+
+        .social-icons {
+            justify-content: center;
+        }
+
+        .left, .right {
+            margin: 10px 0;
+        }
+
+        /* Center the "Enquire Now" and "Post Now" buttons */
+        .action-button {
+            margin: 10px auto; /* Center the button horizontally */
+            width: fit-content; /* Ensure the button width adjusts to content */
+        }
+    }
+.homed{
+text-decoration: none;
+color: rgb(31, 140, 224);
+}
+
+.footer-bottom .left a{
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .footer-bottom .right a{
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body >
+   
+    <nav class="navbar ">
+        <div class="logo"><a href="./index.html"><img src="image/logo2.jpeg" alt="logo"></a></div>
+        <ul class="nav-links">
+            <li><a class="post-btn" href="./broker/broker_login.html"><i class="fa-solid fa-plus"></i> Post Property</a></li>
+            <li><a href="#"><i class="fa-solid fa-bookmark"></i> Saved</a></li>
+            <li><a href="#"><i class="fa-solid fa-bars"></i> Menu</a></li>
+            <li><a href="./login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+
+    <div class="search-container">
+        <select class="form-select w-auto">
+            <option>Property Type</option>
+            <option>Commercial</option>
+            <option>Residency</option>
+            <option>Villas</option>
+            <option>Open flats</option>
+        </select>
+        <select class="form-select w-auto">
+            <option>Buy</option>
+            <option>Sell</option>
+        </select>
+        <select class="form-select w-auto">
+            <option>Hyderabad</option>
+            <option>Delhi</option>
+            <option>Mumbai</option>
+        </select>
+        <input type="text" class="form-control " placeholder="Search">
+        <select class="form-select w-auto">
+            <option>Sort By: Relevance</option>
+            <option>Sort By: Low to High</option>
+            <option>Sort By: High to Low</option>
+        </select>
+        
+    </div>
+    <div class="d-flex justify-content-between p-3">
+        <p><a class="homed" href="./index.html">Home</a> / Buy A Plot In Hyderabad</p>
+        <p>Showing 1-30 Of 22345</p>
+    </div>
+    <div class=" px-4 ">
+        <h3>Buy A Plot In Hyderabad</h3>
+    </div>
+
+    <div class="container ">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="property-card ">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 class="property-title">3 BHK Apartment In Madhapur</h2>
+                            <p class="property-address">H No. 1-90/7/97/401, Jai Hind Society, Madhapur, Hyderabad, Telangana 500081</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="date-info">
+                                <strong>15th March 2025</strong><br>
+                                Posted Date
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-2">
+                        <div class="col-md-5">
+                            <div class="property-image">
+                               <a href="3 BHK Apartment.html"><img src="image/B1.jpg" 
+                                alt="Apartment" class="img-fluid rounded-4" alt="3 BHK Apartment building"></a> 
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="details-box">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="feature-label">Price</div>
+                                        <div class="feature-value">₹75 Lakhs</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Area</div>
+                                        <div class="feature-value">1,500 Sq. Ft.</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Type</div>
+                                        <div class="feature-value">Apartment</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="details-box">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="feature-label">Facing</div>
+                                        <div class="feature-value">West</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Amenities</div>
+                                        <div class="feature-value">8 +</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">BHK</div>
+                                        <div class="feature-value">3 BHK</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <a href="./contact pop.html"><button class="contact-btn">Contact</button></a>
+                                </div>
+                                <div class="col-3 mt-2 text-end">
+                                    <button class="icon-btn"><i class="fas fa-share-alt"></i></button> 
+                                    <button class="icon-btn"><i class="far fa-bookmark"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="promo-card ">
+                    <div class="promo-image ">
+                        <img src="image/b2.jpg" 
+                        alt="Apartment" class="img-fluid rounded-4" alt="Sunshine Destino Apartments">
+                    </div>
+                    
+                    <div class="promo-title">
+                        <i class="fas fa-home home-icon promo-icon"></i> Sunshine Destino
+                    </div>
+                    
+                    <div class="promo-location">
+                        <i class="fas fa-map-marker-alt location-icon promo-icon"></i>
+                        Nanakaramguda, West Hyderabad
+                    </div>
+                    
+                    <div class="promo-price">
+                        <i class="fas fa-coins price-icon promo-icon"></i>
+                        ₹1.21 Cr – ₹3.32 Cr
+                    </div>
+                    
+                    <div class="promo-details">
+                        <i class="fas fa-star star-icon promo-icon"></i>
+                        Spacious 2, 3 & 4 BHK Apartments
+                    </div>
+                    
+                    <div class="">
+                        <a href="./contact pop.html"><button class="contact-btn">Contact</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="property-card ">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 class="property-title">3 BHK Apartment In Madhapur</h2>
+                            <p class="property-address">H No. 1-90/7/97/401, Jai Hind Society, Madhapur, Hyderabad, Telangana 500081</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="date-info">
+                                <strong>15th March 2025</strong><br>
+                                Posted Date
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-2">
+                        <div class="col-md-5">
+                            <div class="property-image">
+                               <a href="3 BHK Apartment.html"><img src="image/B1.jpg" 
+                                alt="Apartment" class="img-fluid rounded-4" alt="3 BHK Apartment building"></a> 
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="details-box">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="feature-label">Price</div>
+                                        <div class="feature-value">₹75 Lakhs</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Area</div>
+                                        <div class="feature-value">1,500 Sq. Ft.</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Type</div>
+                                        <div class="feature-value">Apartment</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="details-box">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="feature-label">Facing</div>
+                                        <div class="feature-value">West</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Amenities</div>
+                                        <div class="feature-value">8 +</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">BHK</div>
+                                        <div class="feature-value">3 BHK</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                   <a href="./contact pop.html"><button class="contact-btn">Contact</button></a>
+                                </div>
+                                <div class="col-3 mt-2 text-end">
+                                    <button class="icon-btn"><i class="fas fa-share-alt"></i></button> 
+                                    <button class="icon-btn"><i class="far fa-bookmark"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="promo-card ">
+                    <div class="promo-image">
+                        <img src="image/b2.jpg" 
+                        alt="Apartment" class="img-fluid rounded-4" alt="Sunshine Destino Apartments">
+                    </div>
+                    
+                    <div class="promo-title">
+                        <i class="fas fa-home home-icon promo-icon"></i> Sunshine Destino
+                    </div>
+                    
+                    <div class="promo-location">
+                        <i class="fas fa-map-marker-alt location-icon promo-icon"></i>
+                        Nanakaramguda, West Hyderabad
+                    </div>
+                    
+                    <div class="promo-price">
+                        <i class="fas fa-coins price-icon promo-icon"></i>
+                        ₹1.21 Cr – ₹3.32 Cr
+                    </div>
+                    
+                    <div class="promo-details">
+                        <i class="fas fa-star star-icon promo-icon"></i>
+                        Spacious 2, 3 & 4 BHK Apartments
+                    </div>
+                    
+                    <div class="">
+                        <a href="./contact pop.html"><button class="contact-btn">Contact</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="property-card ">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 class="property-title">3 BHK Apartment In Madhapur</h2>
+                            <p class="property-address">H No. 1-90/7/97/401, Jai Hind Society, Madhapur, Hyderabad, Telangana 500081</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="date-info">
+                                <strong>15th March 2025</strong><br>
+                                Posted Date
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-2">
+                        <div class="col-md-5">
+                            <div class="property-image">
+                               <a href="3 BHK Apartment.html"><img src="image/B1.jpg" 
+                                alt="Apartment" class="img-fluid rounded-4" alt="3 BHK Apartment building"></a> 
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="details-box">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="feature-label">Price</div>
+                                        <div class="feature-value">₹75 Lakhs</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Area</div>
+                                        <div class="feature-value">1,500 Sq. Ft.</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Type</div>
+                                        <div class="feature-value">Apartment</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="details-box">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="feature-label">Facing</div>
+                                        <div class="feature-value">West</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Amenities</div>
+                                        <div class="feature-value">8 +</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">BHK</div>
+                                        <div class="feature-value">3 BHK</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <a href="./contact pop.html"><button class="contact-btn">Contact</button></a>
+                                </div>
+                                <div class="col-3 mt-2 text-end">
+                                    <button class="icon-btn"><i class="fas fa-share-alt"></i></button> 
+                                    <button class="icon-btn"><i class="far fa-bookmark"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="promo-card ">
+                    <div class="promo-image">
+                        <img src="image/b2.jpg" 
+                        alt="Apartment" class="img-fluid rounded-4" alt="Sunshine Destino Apartments">
+                    </div>
+                    
+                    <div class="promo-title">
+                        <i class="fas fa-home home-icon promo-icon"></i> Sunshine Destino
+                    </div>
+                    
+                    <div class="promo-location">
+                        <i class="fas fa-map-marker-alt location-icon promo-icon"></i>
+                        Nanakaramguda, West Hyderabad
+                    </div>
+                    
+                    <div class="promo-price">
+                        <i class="fas fa-coins price-icon promo-icon"></i>
+                        ₹1.21 Cr – ₹3.32 Cr
+                    </div>
+                    
+                    <div class="promo-details">
+                        <i class="fas fa-star star-icon promo-icon"></i>
+                        Spacious 2, 3 & 4 BHK Apartments
+                    </div>
+                    
+                    <div class="">
+                        <a href="./contact pop.html"><button class="contact-btn">Contact</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="property-card ">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 class="property-title">3 BHK Apartment In Madhapur</h2>
+                            <p class="property-address">H No. 1-90/7/97/401, Jai Hind Society, Madhapur, Hyderabad, Telangana 500081</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="date-info">
+                                <strong>15th March 2025</strong><br>
+                                Posted Date
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-2">
+                        <div class="col-md-5">
+                            <div class="property-image">
+                               <a href="3 BHK Apartment.html"><img src="image/B1.jpg" 
+                                alt="Apartment" class="img-fluid rounded-4" alt="3 BHK Apartment building"></a> 
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="details-box">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="feature-label">Price</div>
+                                        <div class="feature-value">₹75 Lakhs</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Area</div>
+                                        <div class="feature-value">1,500 Sq. Ft.</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Type</div>
+                                        <div class="feature-value">Apartment</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="details-box">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="feature-label">Facing</div>
+                                        <div class="feature-value">West</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">Amenities</div>
+                                        <div class="feature-value">8 +</div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-label">BHK</div>
+                                        <div class="feature-value">3 BHK</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                  <a href="./contact pop.html"> <button class="contact-btn">Contact</button></a>
+                                </div>
+                                <div class="col-3 mt-2 text-end">
+                                    <button class="icon-btn"><i class="fas fa-share-alt"></i></button> 
+                                    <button class="icon-btn"><i class="far fa-bookmark"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="promo-card ">
+                    <div class="promo-image">
+                        <img src="image/b2.jpg" 
+                        alt="Apartment" class="img-fluid rounded-4" alt="Sunshine Destino Apartments">
+                    </div>
+                    
+                    <div class="promo-title">
+                        <i class="fas fa-home home-icon promo-icon"></i> Sunshine Destino
+                    </div>
+                    
+                    <div class="promo-location">
+                        <i class="fas fa-map-marker-alt location-icon promo-icon"></i>
+                        Nanakaramguda, West Hyderabad
+                    </div>
+                    
+                    <div class="promo-price">
+                        <i class="fas fa-coins price-icon promo-icon"></i>
+                        ₹1.21 Cr – ₹3.32 Cr
+                    </div>
+                    
+                    <div class="promo-details">
+                        <i class="fas fa-star star-icon promo-icon"></i>
+                        Spacious 2, 3 & 4 BHK Apartments
+                    </div>
+                    
+                    <div class="">
+                        <a href="./contact pop.html"><button class="contact-btn">Contact</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer ">
+        <div class="footer-container">
+            <!-- Search Section -->
+            <div class="footer-section">
+                <h3>SEARCH</h3>
+                <div class="search-box">
+                    <input type="text" placeholder="Search For State">
+                    <button>Search</button>
+                </div>
+            </div>
+      
+            <!-- Find Property & List Property -->
+            <div class="footer-section">
+                <h3>FIND PROPERTY</h3>
+                <p>Select From Thousands Of Options, Without Brokerage.</p>
+                <button class="action-button"><a href="#">Enquiry Now</a></button>
+      
+                <h3 style="margin-top: 10px;">LIST YOUR PROPERTY</h3>
+                <p>For Free. Without Any Brokerage.</p>
+                <button class="action-button"><a href="#">Post Now</a></button>
+            </div>
+      
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h3>CONTACT US</h3>
+                <p>Toll Free - 1800 41 99099</p>
+                <p>9:30 AM To 6:30 PM (Mon-Sun)</p>
+                <p>Email - feedback@propertysr.com</p>
+      
+                <h3>FOLLOW US</h3>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/" style="text-decoration: none; color: #666;"><i class="fa-brands fa-facebook-f"></i></a> <!-- Facebook -->
+                    <a href="https://www.instagram.com/accounts/login/?hl=en" style="text-decoration: none; color: #666;"><i class="fa-brands fa-instagram"></i></a> <!-- Instagram -->
+                    <a href="https://x.com/i/flow/login?lang=en" style="text-decoration: none; color: #666;"><i class="fa-brands fa-twitter"></i></a> <!-- X (Twitter) -->
+                </div>
+            </div>
+      
+            <!-- Company Links -->
+            <div class="footer-section">
+                <h3>COMPANY</h3>
+                  <p><a href="#" style="text-decoration: none; color: #666;">Careers</a></p>
+                  <p><a href="#" style="text-decoration: none; color: #666;">About Us</a></p>
+                  <p><a href="#" style="text-decoration: none; color: #666;">For Partners</a></p>
+                  <p><a href="#" style="text-decoration: none; color: #666;">Terms</a></p>
+                  <p><a href="#" style="text-decoration: none; color: #666;">Annual Return</a></p>
+                  <p><a href="#" style="text-decoration: none; color: #666;">Privacy Policy</a></p>
+                  <p><a href="#" style="text-decoration: none; color: #666;">Contact Us</a></p>
+                  <p><a href="#" style="text-decoration: none; color: #666;">Unsubscribe</a></p>
+                  <p><a href="#" style="text-decoration: none; color: #666;">Merger Hearing Advertisement</a></p>
+            </div>
+        </div>
+      
+        <div class="footer-bottom">
+            <span class="left"><b><a href="https://propertysr.com/" target="_blank">©WEEKDAYS PROPERTIES,</a></b> All Rights Reserved.</span>
+            <span class="right">Designed By <b><a href="https://www.potlatechsolutions.com/" target="_blank">POTLA TECH SOLUTIONS Pvt. Ltd.</a></b>
+            </span>
+        </div>
+      </footer>
+      
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple JavaScript for button interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactBtns = document.querySelectorAll('.contact-btn, .promo-contact');
+            const shareBtns = document.querySelectorAll('.icon-btn')[0];
+            const bookmarkBtns = document.querySelectorAll('.icon-btn')[1];
+            
+            contactBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Contact form would open here');
+                });
+            });
+            // postpBtn button
+            document.querySelectorAll('.postpBtn').forEach(btn => {
+                btn.addEventListener('click', function(){
+                        alert('Opening post property form');
+                });
+            })
+            // search button
+            document.querySelectorAll('.search-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Searching for state...');
+            });
+
+            // Enquiry Button
+        document.querySelectorAll('.enquiry-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Redirecting to enquiry form...');
+            });
+            });
+
+            // Post Property Button
+        document.querySelectorAll('.post-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Redirecting to post property form...');
+            });
+        });
+        
+            
+           
+    });
+});
+    document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu toggle
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+        });
+        
+    // share button event
+        document.querySelectorAll('.icon-btn .fa-share-alt').forEach(btn => {
+            btn.parentElement.addEventListener('click', function() {
+                alert('Share options would appear here');
+            });
+        });
+
+        // Bookmark Button Event
+        document.querySelectorAll('.icon-btn .fa-bookmark').forEach(btn => {
+            btn.parentElement.addEventListener('click', function() {
+                btn.classList.toggle('fas');
+                btn.classList.toggle('far');
+                alert(btn.classList.contains('fas') ? 'Added to bookmarks' : 'Removed from bookmarks');
+            });
+        });
+       
+        </script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broker Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-wrapper {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            max-height: 800px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .image-section {
+            flex: 1;
+            background: url('https://img.freepik.com/premium-photo/house-key-lock_172429-598.jpg') no-repeat center center;
+            background-size: cover;
+        }
+        
+        .form-section {
+            flex: 1;
+            background-color: #0c3b7c;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+        
+        .description-text {
+            font-size: 1rem;
+            color: #c9d6e8;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .cta-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #c9d6e8;
+        }
+        
+        .form-group input {
+            padding: 12px 14px;
+            border: 1px solid #2a4a7a;
+            border-radius: 12px;
+            background-color: white;
+            color: black;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%; /* Increased input field width */
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #4285f4;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        .login-btn {
+            background-color: #aa1805;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            width: 150px;
+            align-self: center;
+        }
+        
+        .container {
+            text-align: center;
+        }
+        
+        .login-btn:hover {
+            background-color: #357ab8;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #7a8fb3;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #2a4a7a;
+        }
+        
+        .divider::before {
+            margin-right: 15px;
+        }
+        
+        .divider::after {
+            margin-left: 15px;
+        }
+        
+        .register-text {
+            font-size: 0.9rem;
+            color: #c9d6e8;
+            text-align: center;
+        }
+        
+        .register-text a {
+            color: #4285f4;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .login-wrapper {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .image-section {
+                height: 250px;
+            }
+            
+            .form-section {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="image-section"></div>
+        
+        <div class="form-section">
+            <p class="description-text"> Welcome Back Log In To Your Broker Account To Manage Property Listings, Connect:<br>
+            With Potential Buyers & Sellers, And Track Your Leads Effortlessly.</p>
+            
+            <h6 class="cta-text">Login Now To Grow Your Business!</h6>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="userId">User ID</label>
+                    <input type="text" id="userId" name="userId" required placeholder="Enter your ID">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                </div>
+                
+                <div class="container">
+                    <button type="submit" class="login-btn">Login</button>
+                </div>
+            </form>
+            
+            <div class="divider">Or</div>
+            
+            <p class="register-text">
+                Don't Have An Account? <a href="./broker_register.html">Register Now</a> And Start Listing Properties Today!
+            </p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = 'broker_home.html';
+        });
+    </script>
+</body>
+</html>

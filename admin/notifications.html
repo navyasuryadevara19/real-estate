@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notification Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+  <style>
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+        flex-direction: row;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 260px;
+      background-color: #1e3a8a;
+      color: white;
+      transition: width 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 14px 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 5px 0;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #3b82f6;
+      border-radius: 10px;
+    }
+
+    .sidebar-toggler {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1000;
+      display: none;
+    }
+
+    .admin-footer {
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .logout-btn {
+      background-color: #3b82f6;
+      border: none;
+      padding: 5px 10px;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      padding: 30px;
+      transition: margin-left 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar-toggler {
+        display: block;
+      }
+
+      .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        transform: translateX(0);
+      }
+
+      .sidebar.hidden {
+        transform: translateX(-100%);
+      }
+
+      .main-content {    
+    margin: 0 auto; 
+    margin-top: 30px;
+    padding: 30px 20px;
+  
+      }
+    }
+
+    .card-data {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+.card-data:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+    .badge-system {
+      background-color: #1e40af;
+      color: white;
+    }
+
+    .badge-marketing {
+      background-color: #059669;
+      color: white;
+    }
+
+    .badge-content {
+      background-color: #db2777;
+      color: white;
+    }
+
+    .status-sent {
+      background-color: #16a34a;
+      color: white;
+    }
+
+    .status-scheduled {
+      background-color: #f59e0b;
+      color: white;
+    }
+
+    .status-draft {
+      background-color: #6b7280;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+  .table-responsive-sm table thead {
+    display: none;
+  }
+
+  .table-responsive-sm table tbody tr {
+    display: block;
+    margin-bottom: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .table-responsive-sm table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .table-responsive-sm table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .table-responsive-sm table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6c757d;
+    flex-basis: 50%;
+    text-align: left;
+  }
+
+  .table-responsive-sm table tbody td span {
+    margin-left: 0.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .btn-sm {
+    width: 100%; 
+  }
+}
+/* Modal Content */
+.modal-content {
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Input and Select Styling */
+.form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  padding: 10px 12px;
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.btn-outline-secondary {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .modal-content {
+    padding: 20px 16px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
+
+/* for edit sechule */
+.btn-outline-primary {
+  border: 1px solid #007bff;
+  color: #007bff;
+  background-color: transparent;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.rounded-pill {
+  border-radius: 50rem !important;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+<!-- Sidebar Toggle Button -->
+<button id="sidebarToggler" class="btn btn-primary sidebar-toggler" onclick="toggleSidebar(event)">
+  <i class="fas fa-bars"></i>
+</button>
+
+<div class="layout" onclick="handleOutsideClick(event)">
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3" onclick="event.stopPropagation()">
+    <div>
+      <a href="./admin_dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+      <a href="./brokerManagement.html"><i class="fas fa-user-tie me-2"></i>Broker Management</a>
+      <a href="./propertyManagement.html"><i class="fas fa-building me-2"></i>Property Management</a>
+      <a href="./serviceManagement.html"><i class="fas fa-tools me-2"></i>Service Management</a>
+      <a href="./paymentManagement.html"><i class="fas fa-credit-card me-2"></i>Payment Management</a>
+      <a href="./supportManagement.html"><i class="fas fa-headset me-2"></i>Support Management</a>
+      <a class="active" href="./notifications.html"><i class="fas fa-bell me-2"></i>Notifications</a>
+      <a href="./acc_settings.html"><i class="fas fa-user-cog me-2"></i>Account Settings</a>
+    </div>
+    <div class="admin-footer">
+      <div class="mb-2">
+        <strong>Admin</strong><br />
+        <small style="word-break: break-all;">propertysradmin@gmail.com</small>
+      </div>
+      <button class="logout-btn" onclick="handleLogout()" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2>Notification Management</h2>
+    <p class="text-muted">Create & schedule push notifications</p>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-4">
+        <div class="card-data p-3 shadow rounded bg-white">
+          <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-paper-plane fa-lg text-primary me-2"></i>
+            <h5 class="mb-0">Total Sent</h5>
+          </div>
+          <h3>852</h3>
+          <small class="text-success">+18% from previous month</small>
+        </div>
+      </div>
+    
+      <div class="col-md-4">
+        <div class="card-data p-3 shadow rounded bg-white">
+          <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-chart-line fa-lg text-success me-2"></i>
+            <h5 class="mb-0">Open Rate</h5>
+          </div>
+          <h3>76%</h3>
+          <small class="text-success">+5% from previous month</small>
+        </div>
+      </div>
+    
+      <div class="col-md-4">
+        <div class="card-data p-3 shadow rounded bg-white">
+          <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-calendar-check fa-lg text-warning me-2"></i>
+            <h5 class="mb-0">Scheduled</h5>
+          </div>
+          <h3>12</h3>
+          <small class="text-success">+3 from previous month</small>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+          <div class="mb-2 mb-md-0">
+            <h5 class="mb-1">Notifications</h5>
+            <p class="mb-0 text-muted">Manage and schedule notifications for users</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createNotificationModal">
+            <i class="bi bi-bell me-1"></i> Create New
+          </button>
+        </div>
+    
+        <ul class="nav nav-tabs mb-3">
+          <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#all">All</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#sent">Sent</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#scheduled">Scheduled</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#drafts">Drafts</a></li>
+        </ul>
+    
+  
+        <div class="tab-content">
+    
+          <!-- All Tab -->
+          <div class="tab-pane fade show active" id="all">
+            <div class="table-responsive-sm">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                    <th>Open Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="ID">NOT-001</td>
+                    <td data-label="Title">New Properties Alert</td>
+                    <td data-label="Type"><span class="badge rounded-pill badge-system">system</span></td>
+                    <td data-label="Target">All Users</td>
+                    <td data-label="Status"><span class="badge rounded-pill status-sent">sent</span></td>
+                    <td data-label="Open Rate">78%</td>
+                  </tr>
+                  <tr>
+                    <td data-label="ID">NOT-002</td>
+                    <td data-label="Title">Special Discount Offer</td>
+                    <td data-label="Type"><span class="badge rounded-pill badge-marketing">marketing</span></td>
+                    <td data-label="Target">Premium Users</td>
+                    <td data-label="Status"><span class="badge rounded-pill status-sent">sent</span></td>
+                    <td data-label="Open Rate">65%</td>
+                  </tr>
+                  <tr>
+                    <td data-label="ID">NOT-003</td>
+                    <td data-label="Title">Account Verification Reminder</td>
+                    <td data-label="Type"><span class="badge rounded-pill badge-system">system</span></td>
+                    <td data-label="Target">New Users</td>
+                    <td data-label="Status"><span class="badge rounded-pill status-scheduled">scheduled</span></td>
+                    <td data-label="Open Rate">N/A</td>
+                  </tr>
+                  <tr>
+                    <td data-label="ID">NOT-004</td>
+                    <td data-label="Title">New Blog Post Alert</td>
+                    <td data-label="Type"><span class="badge rounded-pill badge-content">content</span></td>
+                    <td data-label="Target">Subscribed Users</td>
+                    <td data-label="Status"><span class="badge rounded-pill status-sent">sent</span></td>
+                    <td data-label="Open Rate">72%</td>
+                  </tr>
+                  <tr>
+                    <td data-label="ID">NOT-005</td>
+                    <td data-label="Title">Platform Maintenance Notice</td>
+                    <td data-label="Type"><span class="badge rounded-pill badge-system">system</span></td>
+                    <td data-label="Target">All Users</td>
+                    <td data-label="Status"><span class="badge rounded-pill status-draft">draft</span></td>
+                    <td data-label="Open Rate">N/A</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+    
+          <!-- Sent Tab -->
+          <div class="tab-pane fade" id="sent">
+            <div class="table-responsive-sm">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Target</th>
+                    <th>Date Sent</th>
+                    <th>Open Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="ID">NOT-001</td>
+                    <td data-label="Title">New Properties Alert</td>
+                    <td data-label="Type"><span class="badge rounded-pill badge-system">system</span></td>
+                    <td data-label="Target">All Users</td>
+                    <td data-label="Date Sent"><span class="date-sent">01/08/2023</span></td>
+                    <td data-label="Open Rate">78%</td>
+                  </tr>
+                  <tr>
+                    <td data-label="ID">NOT-002</td>
+                    <td data-label="Title">Special Discount Offer</td>
+                    <td data-label="Type"><span class="badge rounded-pill badge-marketing">marketing</span></td>
+                    <td data-label="Target">Premium Users</td>
+                    <td data-label="Date Sent"><span class="date-sent">18/08/2023</span></td>
+                    <td data-label="Open Rate">65%</td>
+                  </tr>
+                  <tr>
+                    <td data-label="ID">NOT-004</td>
+                    <td data-label="Title">New Blog Post Alert</td>
+                    <td data-label="Type"><span class="badge rounded-pill badge-content">content</span></td>
+                    <td data-label="Target">Subscribed Users</td>
+                    <td data-label="Date Sent"><span class="date-sent">25/07/2023</span></td>
+                    <td data-label="Open Rate">72%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+    
+          <!-- Scheduled Tab -->
+          <div class="tab-pane fade" id="scheduled">
+            <div class="table-responsive-sm">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Target</th>
+                    <th>Scheduled Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="ID">NOT-003</td>
+                    <td data-label="Title">Account Verification Reminder</td>
+                    <td data-label="Type">
+                      <span class="badge rounded-pill badge-system">system</span>
+                    </td>
+                    <td data-label="Target">New Users</td>
+                    <td data-label="Scheduled Date">
+                      <span class="scheduled-date">03/08/2023</span>
+                    </td>
+                    <td data-label="Actions">
+                      <button 
+                        class="btn btn-outline-primary rounded-pill d-flex align-items-center gap-1 px-3 py-1 edit-btn"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editScheduleModal"
+                        data-id="NOT-003"
+                        data-title="Account Verification Reminder"
+                        data-type="system"
+                        data-target="New Users"
+                        data-date="03/08/2023">
+                        <i class="bi bi-clock"></i> Edit Schedule
+                      </button>
+                    </td>                    
+                  </tr>
+                </tbody>
+                
+              </table>
+            </div>
+          </div>
+    
+          <!--Draft tab-->
+          <div class="tab-pane fade" id="drafts">
+            <div class="table-responsive-sm">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Target</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="ID">NOT-005</td>
+                    <td data-label="Title">Platform Maintenance Notice</td>
+                    <td data-label="Type">
+                      <span class="badge rounded-pill badge-system">system</span>
+                    </td>
+                    <td data-label="Target">All Users</td>
+                    <td data-label="Created Date">
+                      <span class="Created-date">05/08/2023</span>
+                    </td>
+                    <td data-label="Actions">
+                      <button 
+                      class="btn btn-outline-warning rounded-pill d-flex align-items-center gap-1 px-3 py-1 edit-btn"
+                      data-bs-toggle="modal" 
+                      data-bs-target="#editDraftModal"
+                      data-id="NOT-005"
+                      data-title="Platform Maintenance Notice"
+                      data-type="system"
+                      data-target="All Users"
+                      data-date="2023-08-05">
+                      <i class="bi bi-pencil-square"></i> Edit Draft
+                    </button>
+                    
+                    </td>                    
+                  </tr>
+                </tbody>
+                
+              </table>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <!--Edit draft modal-->
+
+    <div class="modal fade" id="editDraftModal" tabindex="-1" aria-labelledby="editDraftLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        
+          <div class="modal-header">
+            <h5 class="modal-title" id="editDraftLabel">Edit Draft</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+    
+          <div class="modal-body">
+            <form id="editDraftForm">
+              <!-- Notification ID -->
+              <div class="mb-3">
+                <label for="draftId" class="form-label">Notification ID</label>
+                <input type="text" class="form-control" id="draftId" disabled required>
+                <input type="hidden" name="draftId" id="hiddenDraftId">
+              </div>
+    
+              <!-- Notification Title -->
+              <div class="mb-3">
+                <label for="draftTitle" class="form-label">Notification Title</label>
+                <input type="text" class="form-control" id="draftTitle" required>
+              </div>
+    
+              <!-- Notification Type (Dropdown) -->
+              <div class="mb-3">
+                <label for="draftType" class="form-label">Type</label>
+                <select class="form-select" id="draftType" required>
+                  <option value="">Select type</option>
+                  <option value="system">System</option>
+                  <option value="user">Marketing</option>
+                  <option value="admin">Content</option>
+                </select>
+              </div>
+    
+              <!-- Notification Target (Dropdown) -->
+              <div class="mb-3">
+                <label for="draftTarget" class="form-label">Target</label>
+                <select class="form-select" id="draftTarget" required>
+                  <option value="">Select target</option>
+                  <option value="New Users">New Users</option>
+                  <option value="All Users">All Users</option>
+                  <option value="Subscribed Users">Subscribed Users</option>
+                  <option value="Premium Users">Premium Users</option>
+                </select>
+              </div>
+    
+              <!-- Scheduled Date -->
+              <div class="mb-3">
+                <label for="draftDate" class="form-label">Scheduled Date</label>
+                <input type="date" class="form-control" id="draftDate" required>
+              </div>
+            </form>
+          </div>
+    
+          <div class="modal-footer">
+            <button type="submit" form="editDraftForm" class="btn btn-warning">Save Draft</button>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+
+    
+    <!--Edit schedule modal-->
+    
+    <div class="modal fade" id="editScheduleModal" tabindex="-1" aria-labelledby="editScheduleLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        
+          <div class="modal-header">
+            <h5 class="modal-title" id="editScheduleLabel">Edit Schedule</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+    
+          <div class="modal-body">
+            <form id="editScheduleForm">
+              <div class="mb-3">
+                <label for="notificationId" class="form-label">Notification ID</label>
+                <input type="text" class="form-control" id="notificationId" disabled required>
+                <input type="hidden" name="notificationId" id="hiddenNotificationId">
+              </div>
+              <div class="mb-3">
+                <label for="notificationTitle" class="form-label">Notification Title</label>
+                <input type="text" class="form-control" id="notificationTitle" required>
+              </div>
+              <div class="mb-3">
+                <label for="notificationType" class="form-label">Type</label>
+                <select class="form-select" id="notificationType" required>
+                  <option value="">Select type</option>
+                  <option value="system">system</option>
+                  <option value="user">marketing</option>
+                  <option value="admin">content</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="notificationTarget" class="form-label">Target</label>
+                <select class="form-select" id="notificationTarget" required>
+                  <option value="">Select target</option>
+                  <option value="New Users">New Users</option>
+                  <option value="All Users">All Users</option>
+                  <option value="Subscribed Users">Subscribed Users</option>
+                  <option value="Premium Users">Premium Users</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="scheduledDate" class="form-label">Scheduled Date</label>
+                <input type="date" class="form-control" id="scheduledDate" required>
+              </div>
+            </form>
+          </div>
+    
+          <div class="modal-footer">
+            <button type="submit" form="editScheduleForm" class="btn btn-primary" id="saveScheduleBtn">Save Changes</button>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+    <!-- Create New Notification Modal -->
+<div class="modal fade" id="createNotificationModal" tabindex="-1">
+  <div class="modal-dialog custom-modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-1">
+        <div class="w-100">
+          <h5 class="modal-title fw-semibold" id="createNotificationLabel">Create New Notification</h5>
+          <p class="text-muted mb-1" style="font-size: 14px;">Create a new notification to send to users</p>
+        
+        </div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="notificationForm">
+          <div class="mb-3">
+            <label for="notificationTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="notificationTitle" placeholder="Enter notification title" required>
+          </div>
+      
+          <div class="mb-3">
+            <label for="notificationType" class="form-label">Type</label>
+            <select class="form-select" id="notificationType" required>
+              <option value="" disabled selected>Select type</option>
+              <option>System</option>
+              <option>Marketing</option>
+              <option>Content</option>
+            </select>
+          </div>
+      
+          <div class="mb-3">
+            <label for="notificationTarget" class="form-label">Target</label>
+            <select class="form-select" id="notificationTarget" required>
+              <option value="" disabled selected>Select target</option>
+              <option>All Users</option>
+              <option>Premium Users</option>
+              <option>New Users</option>
+            </select>
+          </div>
+      
+          <div class="mb-3">
+            <label for="notificationSchedule" class="form-label">Schedule</label>
+            <select class="form-select" id="notificationSchedule" required>
+              <option value="" disabled selected>Select schedule</option>
+              <option>Send Immediately</option>
+              <option>Schedule for Later</option>
+            </select>
+          </div>
+      
+          <div class="mb-4">
+            <label for="notificationMessage" class="form-label">Message</label>
+            <textarea class="form-control" id="notificationMessage" rows="4" placeholder="Enter your message" required></textarea>
+          </div>
+      
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggler = document.getElementById('sidebarToggler');
+
+  function toggleSidebar(e) {
+    e.stopPropagation();
+    sidebar.classList.toggle('hidden');
+
+    if (!sidebar.classList.contains('hidden')) {
+      sidebarToggler.style.display = 'none';
+    }
+  }
+
+  function handleOutsideClick(e) {
+    if (window.innerWidth <= 768 && !sidebar.classList.contains('hidden')) {
+      sidebar.classList.add('hidden');
+      sidebarToggler.style.display = 'block';
+    }
+  }
+
+  function updateSidebarView() {
+    if (window.innerWidth <= 768) {
+      sidebar.classList.add('hidden'); // hide sidebar on small screens
+      sidebarToggler.style.display = 'block';
+    } else {
+      sidebar.classList.remove('hidden'); // always show on desktop
+      sidebarToggler.style.display = 'none';
+    }
+  }
+
+  window.addEventListener('resize', updateSidebarView);
+  window.addEventListener('DOMContentLoaded', updateSidebarView);
+</script>
+
+<script>
+  const editScheduleModal = document.getElementById('editScheduleModal');
+  const editForm = document.getElementById('editScheduleForm');
+
+  // Reset form on modal open
+  editScheduleModal.addEventListener('show.bs.modal', function () {
+    editForm.reset(); 
+  });
+
+  // Fill values when clicking edit
+  const editButtons = document.querySelectorAll('.edit-btn');
+  editButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      document.getElementById('notificationId').value = button.dataset.id;
+      document.getElementById('hiddenNotificationId').value = button.dataset.id;
+      document.getElementById('notificationTitle').value = button.dataset.title;
+      document.getElementById('notificationType').value = button.dataset.type;
+      document.getElementById('notificationTarget').value = button.dataset.target;
+      document.getElementById('scheduledDate').value = button.dataset.date;
+    });
+  });
+
+  // Safe re-submission
+  let allowSubmit = false;
+
+  editForm.addEventListener('submit', function (e) {
+    if (!allowSubmit) {
+      e.preventDefault();
+
+      if (this.checkValidity()) {
+        alert('Schedule updated successfully!');
+        setTimeout(() => {
+          const modal = bootstrap.Modal.getInstance(editScheduleModal);
+          modal.hide();
+
+          allowSubmit = true;
+          this.requestSubmit(); 
+        }, 500);
+      } else {
+        this.reportValidity();
+      }
+    } else {
+      allowSubmit = false; 
+      console.log('Form submitted successfully!');
+    }
+  });
+</script>
+
+<script>
+  const editDraftModal = document.getElementById('editDraftModal');
+  const draftForm = document.getElementById('editDraftForm');
+
+
+  editDraftModal.addEventListener('show.bs.modal', function () {
+    draftForm.reset();
+  });
+
+  const draftButtons = document.querySelectorAll('.edit-btn');
+  draftButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      document.getElementById('draftId').value = button.dataset.id;
+      document.getElementById('hiddenDraftId').value = button.dataset.id;
+      document.getElementById('draftTitle').value = button.dataset.title;
+      document.getElementById('draftType').value = button.dataset.type;
+      document.getElementById('draftTarget').value = button.dataset.target;
+      document.getElementById('draftDate').value = button.dataset.date;
+    });
+  });
+
+
+  let allowDraftSubmit = false;
+
+  draftForm.addEventListener('submit', function (e) {
+    if (!allowDraftSubmit) {
+      e.preventDefault();
+
+      if (this.checkValidity()) {
+        alert('Draft updated successfully!');
+        setTimeout(() => {
+          const modal = bootstrap.Modal.getInstance(editDraftModal);
+          modal.hide();
+
+          allowDraftSubmit = true;
+          this.requestSubmit(); 
+        }, 500);
+      } else {
+        this.reportValidity();
+      }
+    } else {
+      allowDraftSubmit = false; 
+      console.log('Draft form submitted!');
+    }
+  });
+
+
+
+  //logout redirect to login page
+  function handleLogout() {
+      const confirmLogout = confirm("Are you sure you want to logout?");
+      if (confirmLogout) {
+        localStorage.removeItem("token");
+
+        window.location.href = "./admin_login.html";
+      }
+    }
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html

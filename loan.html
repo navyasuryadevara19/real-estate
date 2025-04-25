@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Loan Application</title>
+    <link href="./image/title.jpeg" rel="icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color:#fff;
+            background-size: 100% 100%; 
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #f4eded;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 20px auto;
+            padding: 25px;
+            background-color: transparent;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: rgb(54, 52, 52);
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .address-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .address-group .form-group {
+            flex: 1 1 150px;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .radio-option input {
+            margin-right: 5px;
+            margin-bottom: 8px;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 11px;
+            color: #2c3e50;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        input.error-border, select.error-border {
+            border-color: #e74c3c;
+        }
+        
+        /* Success Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-icon {
+            font-size: 60px;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .modal-message {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .modal-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .modal-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        @media (max-width: 500px) {
+            .address-group .form-group {
+                flex: 1 1 100%;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .modal-title {
+                font-size: 20px;
+            }
+            
+            .modal-message {
+                font-size: 14px;
+            }
+        }
+
+        .terms {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.terms-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Home Loan Application</h1>
+        
+        <form id="loanApplication">
+            <div class="form-group">
+                <label for="name">FULL NAME:</label>
+                <input type="text" id="name" placeholder="Your Full Name" required>
+                <div class="error" id="name-error">Please enter a valid full name (minimum 2 characters)</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">EMAIL:</label>
+                <input type="email" id="email" placeholder="Your E-mail" required>
+                <div class="error" id="email-error">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">PHONE NUMBER:</label>
+                <input type="tel" id="phone" placeholder="Your Phone Number (10 digits)" required>
+                <div class="error" id="phone-error">Please enter a valid 10-digit phone number</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="dob">DATE OF BIRTH:</label>
+                <input type="date" id="dob" required max="">
+                <div class="error" id="dob-error">You must be at least 18 years old</div>
+            </div>
+            
+            <div class="form-group">
+                <label>ADDRESS:</label>
+                <div class="address-group">
+                    <div class="form-group">
+                        <input type="text" id="address1" placeholder="Street Address" required>
+                        <div class="error" id="address1-error">Street address is required</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="address2" placeholder="Apt/Unit (optional)">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="city" placeholder="City" required>
+                        <div class="error" id="city-error">City is required</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="state" placeholder="State" required>
+                        <div class="error" id="state-error">State is required</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="zip" placeholder="Zip Code" required>
+                        <div class="error" id="zip-error">Please enter a valid 5-digit ZIP code</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="loanAmount">LOAN AMOUNT REQUESTED ($):</label>
+                <input type="number" id="loanAmount" placeholder="e.g. 250000" min="10000" step="1000" required>
+                <div class="error" id="loanAmount-error">Loan amount must be at least $10,000</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="detailsFor">LOAN PURPOSE:</label>
+                <select id="detailsFor" required>
+                    <option value="" disabled selected>Select Loan Purpose</option>
+                    <option value="purchase">Home Purchase</option>
+                    <option value="refinance">Refinance</option>
+                    <option value="equity">Home Equity</option>
+                    <option value="construction">New Construction</option>
+                </select>
+                <div class="error" id="detailsFor-error">Please select a loan purpose</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="applyDate">DATE OF APPLICATION:</label>
+                <input type="date" id="applyDate" required max="">
+                <div class="error" id="applyDate-error">Application date cannot be in the future</div>
+            </div>
+            
+            <div class="form-group">
+                <label>EMPLOYMENT STATUS:</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="employed" name="employment" value="employed" required>
+                        <label for="employed">Employed</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="self-employed" name="employment" value="self-employed">
+                        <label for="self-employed">Self-Employed</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="unemployed" name="employment" value="unemployed">
+                        <label for="unemployed">Unemployed</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="retired" name="employment" value="retired">
+                        <label for="retired">Retired</label>
+                    </div>
+                </div>
+                <div class="error" id="employment-error">Please select employment status</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Are you represented by a Realtor?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="realtorYes" name="realtor" value="yes" required>
+                        <label for="realtorYes">Yes</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="realtorNo" name="realtor" value="no">
+                        <label for="realtorNo">No</label>
+                    </div>
+                </div>
+                <div class="error" id="realtor-error">Please select an option</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="creditRange">CREDIT SCORE RANGE:</label>
+                <select id="creditRange" required>
+                    <option value="" disabled selected>Select Credit Score Range</option>
+                    <option value="excellent">720+ (Excellent)</option>
+                    <option value="good">660-719 (Good)</option>
+                    <option value="fair">620-659 (Fair)</option>
+                    <option value="poor">580-619 (Poor)</option>
+                    <option value="very-poor">Below 580 (Very Poor)</option>
+                    <option value="unknown">I don't know</option>
+                </select>
+                <div class="error" id="creditRange-error">Please select your credit score range</div>
+            </div>
+            
+            <div class="form-group terms">
+                <label for="agreeTerms" class="terms-label">
+                    <input type="checkbox" id="agreeTerms" required>
+                    I agree to the terms and conditions and authorize a credit check
+                </label>
+                <div class="error" id="agreeTerms-error">You must agree to the terms</div>
+            </div>
+            
+            <button type="submit" class="btn">APPLY NOW</button>
+        </form>
+        
+        <footer>
+            2025 Home Loan Application Form. All rights reserved by Weekdays Properties
+        </footer>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">✓</div>
+            <h2 class="modal-title">Application Submitted Successfully!</h2>
+            <p class="modal-message">
+                Thank you for your home loan application. A loan officer will review your information 
+                and contact you within 1-2 business days. Please check your email for a confirmation 
+                of your submission.
+            </p>
+            <button class="modal-btn" id="modalCloseBtn">OK</button>
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function () {
+        // Indian States Dropdown Population
+        const indianStates = [
+{
+"key": "AN",
+"name": "Andaman and Nicobar Islands"
+},
+{
+"key": "AP",
+"name": "Andhra Pradesh"
+},
+{
+"key": "AR",
+"name": "Arunachal Pradesh"
+},
+{
+"key": "AS",
+"name": "Assam"
+},
+{
+"key": "BR",
+"name": "Bihar"
+},
+{
+"key": "CG",
+"name": "Chandigarh"
+},
+{
+"key": "CH",
+"name": "Chhattisgarh"
+},
+{
+"key": "DH",
+"name": "Dadra and Nagar Haveli"
+},
+{
+"key": "DD",
+"name": "Daman and Diu"
+},
+{
+"key": "DL",
+"name": "Delhi"
+},
+{
+"key": "GA",
+"name": "Goa"
+},
+{
+"key": "GJ",
+"name": "Gujarat"
+},
+{
+"key": "HR",
+"name": "Haryana"
+},
+{
+"key": "HP",
+"name": "Himachal Pradesh"
+},
+{
+"key": "JK",
+"name": "Jammu and Kashmir"
+},
+{
+"key": "JH",
+"name": "Jharkhand"
+},
+{
+"key": "KA",
+"name": "Karnataka"
+},
+{
+"key": "KL",
+"name": "Kerala"
+},
+{
+"key": "LD",
+"name": "Lakshadweep"
+},
+{
+"key": "MP",
+"name": "Madhya Pradesh"
+},
+{
+"key": "MH",
+"name": "Maharashtra"
+},
+{
+"key": "MN",
+"name": "Manipur"
+},
+{
+"key": "ML",
+"name": "Meghalaya"
+},
+{
+"key": "MZ",
+"name": "Mizoram"
+},
+{
+"key": "NL",
+"name": "Nagaland"
+},
+{
+"key": "OR",
+"name": "Odisha"
+},
+{
+"key": "PY",
+"name": "Puducherry"
+},
+{
+"key": "PB",
+"name": "Punjab"
+},
+{
+"key": "RJ",
+"name": "Rajasthan"
+},
+{
+"key": "SK",
+"name": "Sikkim"
+},
+{
+"key": "TN",
+"name": "Tamil Nadu"
+},
+{
+"key": "TS",
+"name": "Telangana"
+},
+{
+"key": "TR",
+"name": "Tripura"
+},
+{
+"key": "UK",
+"name": "Uttar Pradesh"
+},
+{
+"key": "UP",
+"name": "Uttarakhand"
+},
+{
+"key": "WB",
+"name": "West Bengal"
+}
+]
+    
+
+        const $stateSelect = $('<select id="state" required></select>');
+        $stateSelect.append('<option value="" disabled selected>Select State</option>');
+        indianStates.forEach(state => {
+            $stateSelect.append(`<option value="${state.name}">${state.name}</option>`);
+        });
+        $('#state').replaceWith($stateSelect);
+
+        // Validation Helpers
+        function showError(id, message) {
+            $('#' + id).text(message).show();
+            $('#' + id.replace('-error', '')).addClass('error-border');
+        }
+
+        function hideError(id) {
+            $('#' + id).hide();
+            $('#' + id.replace('-error', '')).removeClass('error-border');
+        }
+
+        // Field Validations
+        function validateName() {
+            const name = $('#name').val().trim();
+            const nameRegex = /^[A-Za-z\s]+$/;
+            if (name.length < 2 || !nameRegex.test(name)) {
+                showError('name-error', 'Please enter a valid full name (minimum 2 characters, only letters)');
+                return false;
+            }
+            hideError('name-error');
+            return true;
+        }
+
+
+        function validateEmail() {
+    const email = $('#email').val().trim();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|hotmail\.com)$/;
+    
+    if (!emailRegex.test(email)) {
+        showError('email-error', 'Please enter a valid email ending with @gmail.com, @yahoo.com, or @hotmail.com');
+        return false;
+    }
+
+    hideError('email-error');
+    return true;
+}
+        function validatePhone() {
+            const phone = $('#phone').val().trim().replace(/\D/g, '');
+            if (phone.length !== 10) {
+                showError('phone-error', 'Please enter a valid 10-digit phone number');
+                return false;
+            }
+            hideError('phone-error');
+            return true;
+        }
+
+        function validateDOB() {
+            const dob = new Date($('#dob').val());
+            if (!dob.getTime()) {
+                showError('dob-error', 'Please enter your date of birth');
+                return false;
+            }
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+            if (age < 18) {
+                showError('dob-error', 'You must be at least 18 years old');
+                return false;
+            }
+            hideError('dob-error');
+            return true;
+        }
+
+        function validateAddress() {
+            const address1 = $('#address1').val().trim();
+            const city = $('#city').val().trim();
+            const state = $('#state').val();
+            const zip = $('#zip').val().trim();
+            let valid = true;
+
+            if (!address1) {
+                showError('address1-error', 'Street address is required');
+                valid = false;
+            } else hideError('address1-error');
+
+            if (!city) {
+                showError('city-error', 'City is required');
+                valid = false;
+            } else hideError('city-error');
+
+            if (!state) {
+                showError('state-error', 'State is required');
+                valid = false;
+            } else hideError('state-error');
+
+            if (!/^\d{6}$/.test(zip)) {
+                showError('zip-error', 'Please enter a valid 5-digit ZIP code');
+                valid = false;
+            } else hideError('zip-error');
+
+            return valid;
+        }
+
+        function validateLoanAmount() {
+            const amount = parseFloat($('#loanAmount').val());
+            if (isNaN(amount) || amount < 10000) {
+                showError('loanAmount-error', 'Loan amount must be at least $10,000');
+                return false;
+            }
+            hideError('loanAmount-error');
+            return true;
+        }
+
+        function validateLoanPurpose() {
+            const purpose = $('#detailsFor').val();
+            if (!purpose) {
+                showError('detailsFor-error', 'Please select a loan purpose');
+                return false;
+            }
+            hideError('detailsFor-error');
+            return true;
+        }
+
+        function validateApplyDate() {
+            const applyDate = new Date($('#applyDate').val());
+            const today = new Date();
+            
+            if (!applyDate.getTime()) {
+                showError('applyDate-error', 'Application date cannot be in the future');
+                return false;
+            }
+            hideError('applyDate-error');
+            return true;
+        }
+
+        function validateEmployment() {
+            if (!$('input[name="employment"]:checked').val()) {
+                showError('employment-error', 'Please select employment status');
+                return false;
+            }
+            hideError('employment-error');
+            return true;
+        }
+
+        function validateRealtor() {
+            if (!$('input[name="realtor"]:checked').val()) {
+                showError('realtor-error', 'Please select an option');
+                return false;
+            }
+            hideError('realtor-error');
+            return true;
+        }
+
+        function validateCreditRange() {
+            const credit = $('#creditRange').val();
+            if (!credit) {
+                showError('creditRange-error', 'Please select your credit score range');
+                return false;
+            }
+            hideError('creditRange-error');
+            return true;
+        }
+
+        function validateTerms() {
+            if (!$('#agreeTerms').is(':checked')) {
+                showError('agreeTerms-error', 'You must agree to the terms');
+                return false;
+            }
+            hideError('agreeTerms-error');
+            return true;
+        }
+
+        // Final Submission
+        $('#loanApplication').on('submit', function (e) {
+            e.preventDefault();
+
+            const isValid =
+                validateName() &&
+                validateEmail() &&
+                validatePhone() &&
+                validateDOB() &&
+                validateAddress() &&
+                validateLoanAmount() &&
+                validateLoanPurpose() &&
+                validateApplyDate() &&
+                validateEmployment() &&
+                validateRealtor() &&
+                validateCreditRange() &&
+                validateTerms();
+                console.log(isValid)
+            if (isValid) {
+                $('#successModal').fadeIn();
+                $('#successModal').addClass('active');
+                $('#loanApplication')[0].reset(); // Optional: reset form after submission
+                
+            }
+        });
+
+        // Close Modal
+        $('#modalCloseBtn').on('click', function () {
+            $('#successModal').fadeOut();
+            $('#successModal').removeClass('active');
+            
+        });
+
+            // Set max date for application date (today)
+            const today = new Date().toISOString().split('T')[0];
+            const dobMax = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+            $('#applyDate').attr('min', today);
+            $('#applyDate').attr('max', today);
+            $('#dob').attr('max', dobMax);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weekdays Properties Admin Register</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #f8fbff, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a3e83;
+      margin-bottom: 30px;
+    }
+
+    .register-box {
+      background-color: #fff;
+      padding: 30px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      margin: 0 auto;
+    }
+
+    .register-box h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-align: left;
+    }
+
+    .description {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    button {
+      padding: 12px;
+      background-color: #1a3e83;
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0e2b61;
+    }
+
+    form p {
+      margin-top: 15px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    form p a {
+      color: #1a3e83;
+      text-decoration: none;
+      margin-left: 5px;
+      font-weight: bold;
+    }
+
+    form p a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 400px) {
+      .register-box {
+        width: 90%;
+        padding: 20px;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="logo">Weekdays Properties</h1>
+    <div class="register-box">
+      <h2>Admin Register</h2>
+      <p class="description">Fill the form to create your admin account</p>
+
+      <form id="registerForm">
+        <label for="userId">User ID</label>
+        <input type="text" id="userId" name="userId" placeholder="Enter user ID" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="admin@example.com" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="********" required />
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="********" required />
+
+        <button type="submit">Register</button>
+        <p>Already have an account? <a href="./admin_login.html">Login</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+  
+      const userId = document.getElementById('userId').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+  
+      // Validate all fields are filled
+      if (!userId || !email || !password || !confirmPassword) {
+        alert('Please fill in all fields.');
+        return;
+      }
+  
+      // Validate User ID (alphanumeric, minimum 4 characters)
+    //   const userIdRegex = /^[a-zA-Z0-9]{4,}$/;
+    //   if (!userIdRegex.test(userId)) {
+    //     alert('User ID must be alphanumeric and at least 4 characters.');
+    //     return;
+    //   }
+  
+      // Validate allowed email domains
+      const allowedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
+      const emailParts = email.split('@');
+      if (emailParts.length !== 2 || !allowedDomains.includes(emailParts[1])) {
+        alert('Use a valid email from gmail.com, yahoo.com, hotmail.com, or outlook.com.');
+        return;
+      }
+  
+      // Validate password strength
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
+      if (!passwordRegex.test(password)) {
+        alert('Password must be at least 8 characters and include at least:\n- 1 uppercase letter\n- 1 lowercase letter\n- 1 number\n- 1 special symbol.');
+        return;
+      }
+  
+      // Validate password match
+      if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+      }
+  
+      alert('Registration successful!');
+      // Proceed with sending data to backend or redirect
+    });
+  </script>
+  
+  
+</body>
+</html>

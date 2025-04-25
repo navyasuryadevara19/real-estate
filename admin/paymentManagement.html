@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --sidebar-collapsed-width: 80px;
+            --primary-color: #1e3a8a;
+            --primary-hover: #3b82f6;
+            --secondary-color: #f8f9fc;
+            --success-color: #1a8754;
+            --info-color: #36b9cc;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            transition: all var(--transition-speed) ease;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .sidebar-nav {
+            flex-grow: 1;
+        }
+
+        .sidebar a {
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 14px 19px;
+            margin: 5px 0   ;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar a i {
+            margin-right: 5px;
+            font-size: 1rem;
+            width: 17px;
+            text-align: center;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: var(--primary-hover);
+        }
+
+        .sidebar.collapsed a span {
+            display: none;
+        }
+
+        .sidebar.collapsed a i {
+            margin-right: 0;
+            font-size: 1.3rem;
+        }
+
+        .admin-footer {
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .logout-btn {
+      background-color: #3b82f6;
+      border: none;
+      padding: 5px 10px;
+      color: white;
+      border-radius: 5px;
+    }
+
+
+        .logout-btn:hover {
+            background-color: #2563eb;
+        }
+
+        .sidebar.collapsed .logout-btn span {
+            display: none;
+        }
+
+        .sidebar.collapsed .logout-btn i {
+            margin-right: 0;
+            font-size: 1.3rem;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            transition: margin-left var(--transition-speed) ease;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar.hidden ~ .main-content {
+            margin-left: 0;
+        }
+
+        /* Topbar Styles */
+        .topbar {
+            height: 70px;
+            background-color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        /* Card Styles */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 15px 20px;
+        }
+
+        /* Status Badges */
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-completed {
+            background-color:#52eca4;
+            color: white;
+        }
+
+        .badge-pending {
+        background-color: #f0be68;
+            color: var(--text-dark);
+        }
+
+        .badge-failed {
+            background-color: #ee8d84;
+            color: white;
+        }
+
+        .badge-active {
+            background-color: #52eca4;
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: #b9bbbe;
+            color: white;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            border-left: 4px solid;
+            border-radius: 8px;
+            height: 100%;
+        }
+
+        .stat-card.revenue {
+            border-left-color: var(--primary-color);
+        }
+
+        .stat-card.transactions {
+            border-left-color: var(--info-color);
+        }
+
+        .stat-card.pending {
+            border-left-color: var(--warning-color);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            color: var(--success-color) !important;
+        }
+
+        .stat-change .text-success {
+            color: var(--success-color) !important;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            border-radius: 8px;
+            overflow: auto;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            font-weight: 600;
+            background-color: #f8f9fa;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        /* Action Icons */
+        .action-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-icons a {
+            color: #6c757d;
+            transition: color 0.2s ease;
+        }
+
+        .action-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Search Box */
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #adb5bd;
+        }
+
+        .search-input {
+            padding-left: 40px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1050;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                margin-top: 30px;
+                padding: 30px 20px;
+            }
+
+            .sidebar-toggler {
+
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                background-color: #0d6efd;
+                color: white;
+                border: none;
+                width: 35px;
+                height: 35px;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 1.25rem;
+            }
+            
+            .action-icons {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .topbar {
+                padding: 0 10px;
+            }
+            
+            .card-header {
+                padding: 15px;
+            }
+            
+            .search-input {
+                margin-bottom: 10px;
+            }
+        }
+
+        .bank-switch {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 20px;
+}
+
+.bank-switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.bank-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.bank-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .bank-switch-slider {
+  background-color: #2196F3;
+}
+
+input:focus + .bank-switch-slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .bank-switch-slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.bank-switch-slider.round {
+  border-radius: 34px;
+}
+
+.bank-switch-slider.round:before {
+  border-radius: 50%;
+}
+    </style>
+</head>
+<body>
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button id="sidebarToggler" class="sidebar-toggler">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3">
+        <div class="sidebar-content">
+            <div class="sidebar-nav">
+                <a href="./admin_dashboard.html"><i class="fas fa-tachometer-alt me-2"></i><span>Dashboard</span></a>
+                <a href="./brokerManagement.html"><i class="fas fa-user-tie me-2"></i><span>Broker Management</span></a>
+                <a href="./propertyManagement.html"><i class="fas fa-building me-2"></i><span>Property Management</span></a>
+                <a href="./serviceManagement.html"><i class="fas fa-tools me-2"></i><span>Service Management</span></a>
+                <a class="active" href="./paymentManagement.html"><i class="fas fa-credit-card me-2"></i><span>Payment Management</span></a>
+                <a href="./supportManagement.html"><i class="fas fa-headset me-2"></i><span>Support Management</span></a>
+                <a href="./notifications.html"><i class="fas fa-bell me-2"></i><span>Notifications</span></a>
+                <a href="./acc_settings.html"><i class="fas fa-user-cog me-2"></i><span>Account Settings</span></a>
+            </div>
+            
+            <div class="admin-footer">
+                <div class=" mb-2">
+                  <strong>Admin</strong><br />
+                  <small style="word-break: break-all;">propertysradmin@gmail.com</small>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                  </button>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+            <!-- Moved payment Management Heading here -->
+            <div class="pt-1">
+              <h2>Payment Management</h2>
+              <p class="text-muted">Track Broker Payments and Manage Your Bank Accounts</p>
+            </div>
+        <!-- Page Content -->
+        <div class="content-wrapper">
+            <!-- Stats Row -->
+            <div class="row mb-4">
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card stat-card revenue h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Monthly Revenue</div>
+                                    <div class="stat-value">$18,75,000</div>
+                                    <div class="stat-change">
+                                        <i class="fas fa-arrow-up text-success"></i> 16% from previous month
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card stat-card transactions h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Transactions</div>
+                                    <div class="stat-value">512</div>
+                                    <div class="stat-change">
+                                        <i class="fas fa-arrow-up text-success"></i> 8% from previous month
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-4">
+                    <div class="card stat-card pending h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Pending Payments</div>
+                                    <div class="stat-value">48</div>
+                                    <div class="stat-change">
+                                        <i class="fas fa-arrow-up text-success"></i> 5% from previous month
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-0">
+                <h3 class="mb-3">Payment Management</h3>
+                <p class="text-muted">View Broker payment transactions and manage Bank Account Transactions</p>
+              </div>
+
+            <!-- Tabbed Content Section -->
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <div class="nav nav-tabs card-header-tabs" id="paymentTabs" role="tablist">
+                        <div class="nav-item" role="presentation">
+                            <button class="nav-link active" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions" type="button" role="tab" aria-controls="transactions" aria-selected="true">
+                                Payment Transactions
+                            </button>
+                        </div>
+                        <div class="nav-item" role="presentation">
+                            <button class="nav-link" id="bankaccounts-tab" data-bs-toggle="tab" data-bs-target="#bankaccounts" type="button" role="tab" aria-controls="bankaccounts" aria-selected="false">
+                                Bank Accounts
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="paymentTabsContent">
+                        <!-- Transactions Tab -->
+                        <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="search-box">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" class="form-control search-input" placeholder="Search broker or transaction ID...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select">
+                                        <option selected>All Statuses</option>
+                                        <option>Completed</option>
+                                        <option>Pending</option>
+                                        <option>Failed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Transaction ID</th>
+                                            <th>Broker</th>
+                                            <th>Package</th>
+                                            <th>Amount</th>
+                                            <th>Payment Method</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>TRX-001</td>
+                                            <td>Rajesh Sharma</td>
+                                            <td>Expert</td>
+                                            <td>$30,500</td>
+                                            <td>Credit Card</td>
+                                            <td><span class="badge-status badge-completed">completed</span></td>
+                                            <td>1/8/2023</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <a href="#" title="Download" class="download-btn"><i class="fas fa-download"></i></a>
+                                                    <a href="#" title="Print" class="print-btn"><i class="fas fa-print"></i></a>
+                                                    <a href="#" title="View Details" class="view-btn"><i class="fas fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TRX-002</td>
+                                            <td>Priya Patel</td>
+                                            <td>Expert Pro</td>
+                                            <td>$25,000</td>
+                                            <td>UPI</td>
+                                            <td><span class="badge-status badge-completed">completed</span></td>
+                                            <td>2/8/2023</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <a href="#" title="Download" class="download-btn"><i class="fas fa-download"></i></a>
+                                                    <a href="#" title="Print" class="print-btn"><i class="fas fa-print"></i></a>
+                                                    <a href="#" title="View Details" class="view-btn"><i class="fas fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TRX-003</td>
+                                            <td>Vikram Mahotra</td>
+                                            <td>Expert Pro</td>
+                                            <td>$42,200</td>
+                                            <td>NEFT Transfer</td>
+                                            <td><span class="badge-status badge-pending">pending</span></td>
+                                            <td>3/8/2023</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <a href="#" title="Download" class="download-btn"><i class="fas fa-download"></i></a>
+                                                    <a href="#" title="Print" class="print-btn"><i class="fas fa-print"></i></a>
+                                                    <a href="#" title="View Details" class="view-btn"><i class="fas fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TRX-004</td>
+                                            <td>Ananya Singh</td>
+                                            <td>Expert</td>
+                                            <td>$15,000</td>
+                                            <td>Credit Card</td>
+                                            <td><span class="badge-status badge-completed">completed</span></td>
+                                            <td>4/8/2023</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <a href="#" title="Download" class="download-btn"><i class="fas fa-download"></i></a>
+                                                    <a href="#" title="Print" class="print-btn"><i class="fas fa-print"></i></a>
+                                                    <a href="#" title="View Details" class="view-btn"><i class="fas fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>TRX-005</td>
+                                            <td>Rohan Desai</td>
+                                            <td>Expert</td>
+                                            <td>$14,200</td>
+                                            <td>Credit Card</td>
+                                            <td><span class="badge-status badge-failed">failed</span></td>
+                                            <td>5/8/2023</td>
+                                            <td>
+                                                <div class="action-icons">
+                                                    <a href="#" title="Download" class="download-btn"><i class="fas fa-download"></i></a>
+                                                    <a href="#" title="Print" class="print-btn"><i class="fas fa-print"></i></a>
+                                                    <a href="#" title="View Details" class="view-btn"><i class="fas fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Accounts Tab -->
+<div class="tab-pane fade" id="bankaccounts" role="tabpanel" aria-labelledby="bankaccounts-tab">
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addBankAccountModal">
+            <i class="fas fa-plus"></i> Add New Bank Account
+        </button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Account Name</th>
+                    <th>Bank Name</th>
+                    <th>Account Number</th>
+                    <th>IFSC Code</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Real Estate Admin</td>
+                    <td>HDFC Bank</td>
+                    <td>****4321</td>
+                    <td>HDFC0001234</td>
+                    <td><span class="badge-status badge-active">Active</span></td>
+                    <td>
+                        <label class="bank-switch">
+                            <input type="checkbox" >
+                            <span class="bank-switch-slider round"></span>
+                          </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Property Management</td>
+                    <td>ICICI Bank</td>
+                    <td>****7890</td>
+                    <td>ICIC0004567</td>
+                    <td><span class="badge-status badge-inactive">Inactive</span></td>
+                    <td>
+                        <label class="bank-switch">
+                            <input type="checkbox" >
+                            <span class="bank-switch-slider round"></span>
+                          </label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+                            <div class="alert alert-info mt-3">
+                                <strong>Active Bank Account</strong>
+                                <p class="mb-0">The active bank account will automatically receive all broker payments. You can change the active account at any time.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bank Account Modal -->
+    <div class="modal fade" id="addBankAccountModal" tabindex="-1" aria-labelledby="addBankAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBankAccountModalLabel">Add New Bank Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Success Message -->
+                    <div id="successMessage" class="alert alert-success alert-dismissible fade d-none" role="alert">
+                        ✅ Bank account saved successfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                      
+            
+                    <p>Enter the bank account details where broker payments will be received</p>
+                    <form id="bankAccountForm" novalidate>
+                      <div class="mb-3">
+                        <label for="accountName" class="form-label">Account Name</label>
+                        <input type="text" class="form-control" id="accountName" placeholder="Enter account name">
+                        <div class="invalid-feedback" id="accountNameError"></div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="bankName" class="form-label">Bank Name</label>
+                        <input type="text" class="form-control" id="bankName" placeholder="Enter bank name">
+                        <div class="invalid-feedback" id="bankNameError"></div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="accountNumber" class="form-label">Account Number</label>
+                        <input type="number" class="form-control" id="accountNumber" placeholder="Enter account number">
+                        <div class="invalid-feedback" id="accountNumberError"></div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="ifscCode" class="form-label">IFSC Code</label>
+                        <input type="text" class="form-control" id="ifscCode" placeholder="Enter IFSC code">
+                        <div class="invalid-feedback" id="ifscCodeError"></div>
+                      </div>
+                      
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="saveButton" class="btn btn-primary ">Save Bank Account</button>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Toggle sidebar on mobile
+            $('#sidebarToggler').click(function() {
+                $('#sidebar').toggleClass('show');
+            });
+
+            // Collapse sidebar on desktop
+            $('#sidebarToggle').click(function() {
+                $('#sidebar').toggleClass('collapsed');
+            });
+            
+            // Close sidebar when clicking outside on mobile
+            $(document).click(function(event) {
+                if ($(window).width() <= 992) {
+                    if (!$(event.target).closest('#sidebar').length && !$(event.target).is('#sidebarToggler')) {
+                        $('#sidebar').removeClass('show');
+                    }
+                }
+            });
+            
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+            
+            // Search functionality for transactions
+            $('.search-input').on('keyup', function() {
+                const value = $(this).val().toLowerCase();
+                $('#transactions table tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+            
+            // Status filter for transactions
+            $('#transactions .form-select').change(function() {
+                const status = $(this).val().toLowerCase();
+                if (status === 'all statuses') {
+                    $('#transactions table tbody tr').show();
+                } else {
+                    $('#transactions table tbody tr').each(function() {
+                        const rowStatus = $(this).find('.badge-status').text().toLowerCase();
+                        $(this).toggle(rowStatus === status);
+                    });
+                }
+            });
+            
+            // Activate bank account
+            $('#bankaccounts .btn-link.text-primary').click(function() {
+                // Deactivate all accounts first
+                $('#bankaccounts .badge-status').removeClass('badge-active').addClass('badge-inactive').text('Inactive');
+                $('#bankaccounts .btn-link.text-success').removeClass('text-success').addClass('text-primary').text('Activate');
+                
+                // Activate selected account
+                $(this).closest('tr').find('.badge-status').removeClass('badge-inactive').addClass('badge-active').text('active');
+                $(this).removeClass('text-primary').addClass('text-success').text('Activated');
+                
+                // Show success message
+                alert('Bank account activated successfully!');
+            });
+            
+            // Print transaction functionality
+            $('.print-btn').click(function(e) {
+                e.preventDefault();
+                const transactionId = $(this).closest('tr').find('td:first').text();
+                alert(`Printing transaction: ${transactionId}`);
+                // Actual printing logic would go here
+            });
+            
+            // Download transaction functionality
+            $('.download-btn').click(function(e) {
+                e.preventDefault();
+                const transactionId = $(this).closest('tr').find('td:first').text();
+                alert(`Downloading transaction: ${transactionId}`);
+                // Actual download logic would go here
+            });
+            
+            // View transaction functionality
+            $('.view-btn').click(function(e) {
+                e.preventDefault();
+                const transactionId = $(this).closest('tr').find('td:first').text();
+                alert(`Viewing details for transaction: ${transactionId}`);
+                // Actual view details logic would go here
+            });
+        });
+        
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('bankAccountForm');
+  const saveBtn = document.getElementById('saveButton');
+  const successDiv = document.getElementById('successMessage');
+
+  const fields = {
+    accountName: {
+      el: document.getElementById('accountName'),
+      validate: val => /^[A-Za-z\s]{3,}$/.test(val),
+      errorMsg: "Account name must contain only letters and be at least 3 characters."
+    },
+    bankName: {
+      el: document.getElementById('bankName'),
+      validate: val => /^[A-Za-z\s]{3,}$/.test(val),
+      errorMsg: "Bank name must contain only letters and be at least 3 characters."
+    },
+    accountNumber: {
+      el: document.getElementById('accountNumber'),
+      validate: val => /^\d{9,18}$/.test(val),
+      errorMsg: "Account number must be between 9 and 18 digits."
+    },
+    ifscCode: {
+      el: document.getElementById('ifscCode'),
+      validate: val => /^[A-Z]{4}0[A-Z0-9]{6}$/.test(val),
+      errorMsg: "Enter a valid IFSC Code (e.g., SBIN0123456)."
+    }
+  };
+
+  const showError = (el, message) => {
+    el.classList.add('is-invalid');
+    el.classList.remove('is-valid');
+    document.getElementById(`${el.id}Error`).textContent = message;
+  };
+
+  const showSuccess = (el) => {
+    el.classList.remove('is-invalid');
+    el.classList.add('is-valid');
+    document.getElementById(`${el.id}Error`).textContent = '';
+  };
+
+  // Real-time validation
+  Object.values(fields).forEach(({ el, validate, errorMsg }) => {
+    el.addEventListener('input', () => {
+      const val = el.value.trim();
+      validate(val) ? showSuccess(el) : showError(el, errorMsg);
+    });
+  });
+
+  // On form submit
+  saveBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log(' status:');
+    let isFormValid = true;
+
+    Object.values(fields).forEach(({ el, validate, errorMsg }) => {
+      const val = el.value.trim();
+      if (!validate(val)) {
+        showError(el, errorMsg);
+        isFormValid = false;
+      } else {
+        showSuccess(el);
+      }
+    });
+
+    console.log('Validation status:', isFormValid);
+
+    if (isFormValid) {  
+
+      successDiv.classList.remove('d-none');
+      successDiv.classList.add('show');
+
+      setTimeout(() => {
+        successDiv.classList.remove('show');
+        successDiv.classList.add('d-none');
+      }, 3000);
+
+      setTimeout(() => {
+        form.reset();
+        Object.values(fields).forEach(({ el }) => {
+          el.classList.remove('is-valid', 'is-invalid');
+        });
+      }, 3000);
+    }
+  });
+});
+
+  //logout redirect to login page
+  function handleLogout() {
+      const confirmLogout = confirm("Are you sure you want to logout?");
+      if (confirmLogout) {
+        localStorage.removeItem("token");
+
+        window.location.href = "./admin_login.html";
+      }
+    }
+    </script>
+</body>
+</html>

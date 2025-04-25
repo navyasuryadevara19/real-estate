@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Rent Website</title>
+    <link href="./image/title.jpeg" rel="icon">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+        integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+        integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- FontAwesome (for arrow icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo"><a href="#"><img src="image/logo2.jpeg" alt="Logo"></a></div>
+        <ul class="nav-links">
+            <li><a class="post-btn" href="./broker/broker_login.html"><i class="fa-solid fa-plus"></i> Post Property</a></li>
+            <li><a href="#"><i class="fa-solid fa-bookmark"></i> Saved</a></li>
+            <li><a href="#"><i class="fa-solid fa-bars"></i> Menu</a></li>
+            <li><a href="./login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <!-- Full-screen background slideshow -->
+        <div class="hero-slideshow">
+            <div class="slide" style="background-image: url('https://cdn-blog.zameen.com/blog/wp-content/uploads/2019/10/cover-image-1-6.jpg');"></div>
+            <div class="slide" style="background-image: url('https://cdn.pixabay.com/photo/2016/11/29/03/53/house-1867187_1280.jpg');"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+         <!-- Navigation arrows -->
+            
+            
+            <!-- Dots navigation -->
+            <div class="slide-dots"></div>
+        </div>
+        
+        <!-- Right-side content container -->
+        <div class="content-container">
+            <div class="right">
+                <h1 class="slide-input-header">Explore, Buy, Rent-All In One Place!</h1>
+                <div class="search-container">
+                    <div class="options" id="options-container">
+                        <!-- Property type buttons will be added dynamically here -->
+                    </div>
+                    <div class="location-search">
+                        <select class="city-select" id="city-select">
+                            <!-- Cities will be added dynamically here -->
+                        </select>
+                        <input type="text" placeholder="Search for properties..." id="search-input">
+                        <button class="search-btn" id="search-btn"><i class="fa fa-search"></i> Search</button>
+                    </div>
+                </div>
+                <div class="end-btn">
+                    <p>Are You A Property Owner?</p>
+                    <li><a class="post-btn" href="./broker//broker_login.html"><i class="fa fa-plus"></i> Post Property Ad</a></li>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    <section class="container">
+        <h1>Beyond Listings – We Make Real Estate Easy!</h1>
+    
+        <!-- Owl Carousel -->
+        <div class="owl-carousel owl-theme" id="categoryCarousel">
+            
+                <a href="3 BHK Apartment.html">
+                    <div class="section">
+                    <img src="image/FlatsApartments.avif" alt="Flats/Apartments">
+                
+                <h2>Flats/Apartments</h2>
+                <p>Modern Living, Elevated Comfort.</p>
+            </div>
+        </a>
+        <a href="Agriculture1.html">
+            <div class="section">
+                    <img src="image/Plots.avif" alt="Plots">
+                <h2>Plots</h2>
+                <p>Build Your Vision, Own The Future.</p>
+            </div>
+        </a>
+        <a href="Lands.html">
+            <div class="section">
+              
+                    <img src="image/Lands.avif" alt="Lands">
+            
+                <h2>Lands</h2>
+                <p>Endless Possibilities, One Perfect Space.</p>
+            </div>
+        </a>
+        <a href="dispute_lands.html">
+            <div class="section">
+                    <img src="image/Villas.avif" alt="Villas">
+               
+                <h2>Villas</h2>
+                <p>Luxury Living, Crafted For You.</p>
+            </div>
+        </a>
+            <div class="see-all-box">
+                <a href="./index.html">
+                    <img src="image/see-all.png" alt="See All Properties">
+                </a>
+            </div>
+        </div>
+    
+        <!-- Carousel Controls -->
+        <div class="carousel-controls">
+            <button class="carousel-prev" id="prevCategory"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-next" id="nextCategory"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <section class="container-mobile">
+        
+        <h1>Beyond Listings – We Make Real Estate Easy!</h1>
+        <div class="services-container">
+            <div class="services-row">
+                <!-- Villas -->
+                <div class="service-item">
+                    <div class="service-card" onmouseover="showDesc(this)" onmouseout="hideDesc(this)">
+                        <img src="https://previews.123rf.com/images/sonulkaster/sonulkaster1705/sonulkaster170500601/79163119-house-mansion-or-villa-cottage-courtyard-view-vector-flat-icon.jpg" class="service-image" alt="Villas">
+                    </div>
+                    <button class="service-btn">Villas</button>
+                    <div class="service-desc">Luxury villas with premium amenities</div>
+                </div>
+                
+                <!-- Flats -->
+                <div class="service-item">
+                    <div class="service-card" onmouseover="showDesc(this)" onmouseout="hideDesc(this)">
+                        <img src="https://cdn-icons-png.flaticon.com/512/422/422169.png" class="service-image" alt="Flats">
+                    </div>
+                    <button class="service-btn">Flats</button>
+                    <div class="service-desc">Modern apartments in prime locations</div>
+                </div>
+                <!-- Lands -->
+                <div class="service-item">
+                    <div class="service-card" onmouseover="showDesc(this)" onmouseout="hideDesc(this)">
+                        <img src="https://images.icon-icons.com/3123/PNG/512/meadow_landscape_land_nature_sun_tree_icon_191954.png" class="service-image" alt="Lands">
+                    </div>
+                    <button class="service-btn">Lands</button>
+                    <div class="service-desc">Prime land parcels for development</div>
+                </div>
+                
+                <!-- Plots -->
+                <div class="service-item">
+                    <div class="service-card" onmouseover="showDesc(this)" onmouseout="hideDesc(this)">
+                        <img src="https://static.vecteezy.com/system/resources/previews/051/868/595/non_2x/isometric-illustration-of-a-forest-with-trees-and-a-road-vector.jpg" class="service-image" alt="Plots">
+                    </div>
+                    <button class="service-btn">Plots</button>
+                    <div class="service-desc">Residential and commercial plots</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="container-two">
+        <div class="header">
+            <h1>Handpicked Homes, Just For You!</h1>
+        </div>
+        <div class="carousel">
+            <div class="box">
+                <a href="./Property list.html">
+                    <img src="image/FlatsApartments.avif" alt="Sunshine Destino">
+               
+                <h2>Sunshine Destino</h2>
+                <p>Nanakaramguda, West Hyderabad</p>
+                <p>📖 1.21 Cr – ₹3.32 Cr</p>
+                <p>Spacious 2, 3 & 4 BHK Apartments</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </a>
+            </div>
+            <div class="box">
+                <a href="./Property list.html">
+                    <img src="image/Lands.avif" alt="Sunshine Destino">
+               
+                <h2>Sunshine Destino</h2>
+                <p>Nanakaramguda, West Hyderabad</p>
+                <p>📖 1.21 Cr – ₹3.32 Cr</p>
+                <p>Spacious 2, 3 & 4 BHK Apartments</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                    
+                </div>
+            </a>
+            </div>
+            <div class="box">
+                <a href="./Property list.html">
+                    <img src="image/Plots.avif" alt="Sunshine Destino">
+              
+                <h2>Sunshine Destino</h2>
+                <p>Nanakaramguda, West carouselHyderabad</p>
+                <p>📖 1.21 Cr – ₹3.32 Cr</p>
+                <p>Spacious 2, 3 & 4 BHK Apartments</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <a href="tel:+911234567890" class="phone-link">
+                        <button class="phone-button">
+                            <i class="fas fa-phone-alt phone-button-icon"></i>
+                        </button>
+                    </a>
+                </div>
+            
+                <style>
+
+                    .phone-button:hover {
+                        background-color: transparent !important;
+                        color: #28a745 !important;
+                    }
+            
+                    /* Optional: To ensure the anchor doesn't affect layout */
+                    .phone-link {
+                        text-decoration: none;
+                    }
+            
+                    /* Prevent the button from being affected by default button styles */
+                    .phone-button {
+                        border: none;
+                        background: transparent;
+                        cursor: pointer;
+                    }
+                </style>
+                  </a>
+            </div>
+            
+            <div class="box">
+                <a href="./Property list.html">
+                    <img src="image/Villas.avif" alt="Sunshine Destino">
+              
+                <h2>Sunshine Destino</h2>
+                <p>Nanakaramguda, West Hyderabad</p>
+                <p>📖 1.21 Cr – ₹3.32 Cr</p>
+                <p>Spacious 2, 3 & 4 BHK Apartments</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </a>
+            </div>
+            <div class="box">
+                <a href="./Property list.html">
+                    <img src="image/Plots.avif" alt="Sunshine Destino">
+              
+                <h2>Sunshine Destino</h2>
+                <p>Nanakaramguda, West Hyderabad</p>
+                <p>📖 1.21 Cr – ₹3.32 Cr</p>
+                <p>Spacious 2, 3 & 4 BHK Apartments</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </a>
+            </div>
+            <div class="box">
+                <a href="./Property list.html">
+                    <img src="image/house.jpg" alt="Sunshine Destino">
+              
+                <h2>Sunshine Destino</h2>
+                <p>Nanakaramguda, West Hyderabad</p>
+                <p>📖 1.21 Cr – ₹3.32 Cr</p>
+                <p>Spacious 2, 3 & 4 BHK Apartments</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+
+                </div>
+            </a>
+            </div>
+            <div class=" see-all-box-one">
+                <a href="./index.html">
+                    <img src="image/see-all.png" alt="See All Properties">
+                </a>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="prev" id="prev"><i class="fas fa-chevron-left"></i></button>
+            <button id="next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <section class="section-about">
+        <div class="container-three">
+            <div class="image-container">
+                <img src="image/img1.avif" alt="Moving Image">
+            </div>
+            <div class="content">
+                <h2>Move Smart, Move Safe</h2>
+                <p>From Packing To Unpacking, Our Trusted Packers & Movers Ensure A Smooth, Safe, And Hassle-Free
+                    Relocation Experience. So You Can Focus On Settling Into Your New Home.</p>
+                <a href="#" class="btn">Check Now</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-about">
+        <div class="container-three reverse">
+            <div class="image-container">
+                <img src="image/img2.avif" alt="Another Image">
+            </div>
+            <div class="content">
+                <h2>Build With Confidence, Source With Ease</h2>
+                <p>Another description text goes here. This section is also responsive and will adjust according to the
+                    screen size.</p>
+                <a href="./services.html" class="btn">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-about">
+        <div class="container-three">
+            <div class="image-container">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/027/217/289/small_2x/property-tax-investment-planning-business-real-estate-view-of-coin-stack-with-house-model-mortgage-loading-real-estate-property-with-loan-money-bank-concept-home-sales-and-home-insurance-concept-photo.jpg" alt="loan Image">
+            </div>
+            <div class="content">
+                <h2>Best Offers, Lowest interest Rates</h2>
+                <p>one place to compare Best Offers From all the Best Banks in the country.</p>
+                <a href="C:\Users\srav's Ravipati\Desktop\propertysr\loanform.html" class="btn">Check Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINEST REAL ESTATE DEVELOPMENT SECTION  -->
+
+    <section class="real-estate-section">
+        <div class="real-estate-header">
+            <h1>Discover The Finest Real Estate Developments</h1>
+            <p>Explore Top-Rated Projects Handpicked For Quality, Location, And Value</p>
+        </div>
+        <!-- Owl Carousel -->
+        <div class="owl-carousel owl-theme" id="realEstateCarousel" style="padding: 20px 0;">
+            <a href="./Property list.html">
+            <div class="property-card">
+                <img src="image/house.jpg" alt="Sunshine Destino">
+                <p>🏡 Sunshine Destino</p>
+                <p>📍 Nanakaramguda, West Hyderabad</p>
+                <p>💰 ₹1.21 Cr – ₹3.32 Cr</p>
+                <p>✨ Spacious 2, 3 & 4 BHK Apartments</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+
+                </div>
+            </div>
+        </a>
+        <a href="./Property list.html">
+            <div class="property-card">
+                <img src="image/Lands.avif" alt="Green Valley Plots">
+                <p>🏡 Green Valley Plots</p>
+                <p>📍 Gachibowli, Hyderabad</p>
+                <p>💰 ₹80 Lakh – ₹2.5 Cr</p>
+                <p>✨ Premium Residential Plots</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+
+                </div>
+            </div>
+        </a>
+        <a href="./Property list.html">
+            <div class="property-card">
+                <img src="https://rei.wlimg.com/proj_images/project7373/projGal-20.jpg" alt="Elite Township">
+                <p>🏡 Elite Township</p>
+                <p>📍 Madhapur, Hyderabad</p>
+                <p>💰 ₹90 Lakh – ₹3.8 Cr</p>
+                <p>✨ Luxury Villas & Apartments</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </div>
+            </a>
+            <a href="./Property list.html">
+            <div class="property-card">
+                <img src="image/Villas.avif" alt="Royal Villas">
+                <p>🏡 Royal Villas</p>
+                <p>📍 Kondapur, Hyderabad</p>
+                <p>💰 ₹2.5 Cr – ₹6.0 Cr</p>
+                <p>✨ Ultra-Luxury Independent Villas</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </div>
+            </a>
+            <a href="./Property list.html">
+            <div class="property-card">
+                <img src="image/Plots.avif" alt="Harmony Enclave">
+                <p>🏡 Harmony Enclave</p>
+                <p>📍 Manikonda, Hyderabad</p>
+                <p>💰 ₹1.5 Cr – ₹4.2 Cr</p>
+                <p>✨ Elegant 3 & 4 BHK Homes</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </div>
+            </a>
+            <a href="./Property list.html">
+            <div class="property-card">
+    <div class="verified-button">
+        <i class="fas fa-check-circle"></i> Verified
+    </div>
+    <img src="image/Lands.avif" alt="Green Valley Plots">
+    <p>🏡 Green Valley Plots</p>
+    <p>📍 Gachibowli, Hyderabad</p>
+    <p>💰 ₹80 Lakh – ₹2.5 Cr</p>
+    <p>✨ Premium Residential Plots</p>
+    <div class="button-container">
+        <button class="contact-button">Contact</button>
+        <button class="phone-button">
+            <i class="fas fa-phone-alt phone-button-icon"></i>
+        </button>
+    </div>
+</div>   
+</a>
+<div class="see-all-box">
+    <a href="./Property list.html">
+        <img src="image/see-all.png" alt="See All Properties">
+    </a>
+</div>
+                  
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Navigation Controls -->
+        <div class="carousel-controls">
+            <button class="carousel-prev" id="prevRealEstate"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-next" id="nextRealEstate"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+
+    <!-- TESTIMONIAL SECTION  -->
+    <section class="testimonial-section">
+        <div class="real-estate-header">
+            <div>
+                <h1>What Our expert pro Say</h1>
+                <p>Hear from our satisfied customers about their experiences</p>
+            </div>
+        </div>
+
+        <!-- Owl Carousel -->
+        <div class="owl-carousel owl-theme" id="testimonialCarousel">
+            <a href="./Marketing Experts.html">
+            <div class="testimonial-card">
+                <div>
+                    <img src="https://c8.alamy.com/comp/K4AFFG/user-icon-male-avatar-in-business-suit-businessman-flat-icon-man-in-K4AFFG.jpg"></img>
+                    <div>
+                        <h4>Mohan Reddy</h4>
+                        <p class="badge">Expert</p>
+                    </div>
+                </div>
+                <div>
+                    <p>📍 Financial District, Hyderabad</p>
+                    <p>📈 10 Years of Experience</p>
+                    <p>🏡 40 Properties</p>
+                </div>
+            </div>
+            </a>
+            <a href="./Marketing Experts.html">
+            <div class="testimonial-card">
+                <div>
+                    <img src="https://c8.alamy.com/comp/K4AFFG/user-icon-male-avatar-in-business-suit-businessman-flat-icon-man-in-K4AFFG.jpg"></img>
+                    <div>
+                        <h4>Lokesh</h4>
+                        <p class="badge">Expert</p>
+                    </div>
+                </div>
+                <div>
+                    <p>📍 Madhapur, Hyderabad</p>
+                    <p>📈 10 Years of Experience</p>
+                    <p>🏡 40 Properties</p>
+                </div>
+            </div>
+            </a>
+            <a href="./Marketing Experts.html">
+            <div class="testimonial-card">
+                <div>
+                    <img src="https://c8.alamy.com/comp/K4AFFG/user-icon-male-avatar-in-business-suit-businessman-flat-icon-man-in-K4AFFG.jpg"></img>
+                    <div>
+                        <h4>Navya</h4>
+                        <p class="badge">Expert</p>
+                    </div>
+                </div>
+                <div>
+                    <p>📍 JUbleehills, Hyderabad</p>
+                    <p>📈 10 Years of Experience</p>
+                    <p>🏡 40 Properties</p>
+                </div>
+            </div>
+            </a>
+            <div class="see-all-box-two">
+                <a href="./Marketing Experts.html">
+                    <img src="image/see-all.png" alt="See All Properties">
+                </a>
+            </div>
+        </div>
+        <div class="testimonial-carousel">
+            <button class="carousel-prev" id="prevTestimonial"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-next" id="nextTestimonial"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+
+
+    <section class="real-estate-section">
+        <div class="real-estate-header">
+            <h1>Featured Project: A Landmark In The Making</h1>
+            <p>Discover An Exclusive Project That Blends luxury, Comfort, And Prime Location</p>
+        </div>
+    
+        <!-- Owl Carousel -->
+        <div class="owl-carousel owl-theme" id="featuredProjectCarousel" style="padding: 20px 0;">
+    <a href="./Property list.html">
+            <div class="property-card">
+                <div class="verified-button">
+                    <i class="fas fa-check-circle"></i> Verified
+                </div>
+                <img src="image/Lands.avif" alt="Green Valley Plots">
+                <p>🏡 Green Valley Plots</p>
+                <p>📍 Gachibowli, Hyderabad</p>
+                <p>💰 ₹80 Lakh – ₹2.5 Cr</p>
+                <p>✨ Premium Residential Plots</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </a>
+    
+        <a href="./Property list.html">
+            <div class="property-card">
+                <div class="verified-button">
+                    <i class="fas fa-check-circle"></i> Verified
+                </div>
+                <img src="image/Lands.avif" alt="Green Valley Plots">
+                <p>🏡 Green Valley Plots</p>
+                <p>📍 Gachibowli, Hyderabad</p>
+                <p>💰 ₹80 Lakh – ₹2.5 Cr</p>
+                <p>✨ Premium Residential Plots</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                                    
+                </div>
+            </div>
+            </a>
+            <a href="./Property list.html">
+            <div class="property-card">
+                <div class="verified-button">
+                    <i class="fas fa-check-circle"></i> Verified
+                </div>
+                
+                <img src="image/Villas.avif" alt="Royal Villas">
+                <p>🏡 Royal Villas</p>
+                <p>📍 Kondapur, Hyderabad</p>
+                <p>💰 ₹2.5 Cr – ₹6.0 Cr</p>
+                <p>✨ Ultra-Luxury Independent Villas</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </div>
+            </a>
+            <a href="./Property list.html">
+            <div class="property-card">
+                <div class="verified-button">
+                    <i class="fas fa-check-circle"></i> Verified
+                </div>
+                
+                <img src="image/Villas.avif" alt="Royal Villas">
+                <p>🏡 Hormony Enclave</p>
+                <p>📍 Kondapur, Hyderabad</p>
+                <p>💰 ₹2.5 Cr – ₹6.0 Cr</p>
+                <p>✨ Ultra-Luxury Independent Villas</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+                </div>
+            </div>
+            </a>
+            <a href="./Property list.html">
+            <div class="property-card">
+                <div class="verified-button">
+                    <i class="fas fa-check-circle"></i> Verified
+                </div>
+                
+                <img src="https://rei.wlimg.com/proj_images/project7373/projGal-20.jpg" alt="Green Valley Plots">
+                <p>🏡 Elite Township</p>
+                <p>📍 Gachibowli, Hyderabad</p>
+                <p>💰 ₹80 Lakh – ₹2.5 Cr</p>
+                <p>✨ Premium Residential Plots</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+
+            
+                </div>
+            </div>
+            </a>
+            <a href="./Property list.html">
+            <div class="property-card">
+                <div class="verified-button">
+                    <i class="fas fa-check-circle"></i> Verified
+                </div>
+                
+                <img src="image/FlatsApartments.avif" alt="Green Valley Plots">
+                <p>🏡 skyline Heights</p>
+                <p>📍 Gachibowli, Hyderabad</p>
+                <p>💰 ₹80 Lakh – ₹2.5 Cr</p>
+                <p>✨ Premium Residential Plots</p>
+                <div class="button-container">
+                    <button class="contact-button">Contact</button>
+                    <button class="phone-button">
+                        <i class="fas fa-phone-alt phone-button-icon"></i>
+                    </button>
+            
+            
+            
+                </div>
+            </div>
+            </a>
+            <div class="see-all-box">
+                <a href="./Property list.html">
+                    <img src="image/see-all.png" alt="See All Properties">
+                </a>
+            </div>
+        </div>
+    
+        <!-- Custom Navigation Controls -->
+        <div class="carousel-controls">
+            <button class="carousel-prev" id="prevFeaturedProject"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-next" id="nextFeaturedProject"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+    
+    
+    <!-- TESTIMONIAL SECTION  -->
+    <section class="testimonial-section">
+        <div class="real-estate-header">
+            <div>
+                <h1>What Our experts Say</h1>
+                <p>Hear from our satisfied customers about their experiences</p>
+            </div>
+        </div>
+
+       <!-- Owl Carousel -->
+       <div class="owl-carousel owl-theme" id="testimonialCarousel2">
+        <a href="Marketing Experts.html">
+            <div class="testimonial-card" style="border-color: #1a3e83;">
+                <div>
+                    <img src="https://pbs.twimg.com/profile_images/1643673789665017856/OO3INew5_400x400.jpg" alt="M K Reddy">                  
+                <div>
+                    <h4>M K Reddy</h4>
+                    <p class="badge" style="background-color: green;">Expert</p>
+                </div>
+            </div>
+                <div>
+                    <p>📍 Financial District, Hyderabad</p>
+                    <p>📈 10 Years of Experience</p>
+                    <p>🏡 40 Properties</p>
+                </div>
+            </div>
+        </a>
+        
+        <a href="Marketing Experts.html">
+        <div class="testimonial-card" style="border-color: #1a3e83;">
+            <div>
+                <img src="https://pbs.twimg.com/profile_images/1643673789665017856/OO3INew5_400x400.jpg"></img>
+                <div>
+                    <h4>Seshu</h4>
+                    <p class="badge" style="background-color: green;">Expert</p>
+                </div>
+            </div>
+            <div>
+                <p>📍 KPHB, Hyderabad</p>
+                <p>📈 10 Years of Experience</p>
+                <p>🏡 40 Properties</p>
+            </div>
+        </div>
+    </a>
+
+    <a href="Marketing Experts.html">
+        <div class="testimonial-card" style="border-color: #1a3e83;">
+            <div>
+                <img src="https://pbs.twimg.com/profile_images/1643673789665017856/OO3INew5_400x400.jpg"></img>
+                <div>
+                    <h4>Aravind </h4>
+                    <p class="badge" style="background-color: green;">Expert</p>
+                </div>
+            </div>
+            <div>
+                <p>📍 Hitech city, Hyderabad</p>
+                <p>📈 10 Years of Experience</p>
+                <p>🏡 40 Properties</p>
+            </div>     
+        </div>
+    </a>
+    <div class="see-all-box-two">
+        <a href="#">
+            <img src="image/see-all.png" alt="See All Properties">
+        </a>
+    </div>
+    
+        </div>
+        <div class="testimonial-carousel">
+            <button class="carousel-prev" id="prevTestimonial2"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-next" id="nextTestimonial2"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+    <!-- professional SECTION  -->
+
+    <section class="testimonial-section">
+        <div class="real-estate-header">
+            <div>
+                <h1>Meet Our professionals</h1>
+                <p>Hear from our satisfied customers about their experiences</p>
+            </div>
+        </div>
+
+        <!-- Owl Carousel -->
+        <div class="owl-carousel owl-theme" id="testimonialCarousel3">
+            <a href="./Marketing Experts.html">
+            <div class="testimonial-card" style="border-color: #1a3e83;">
+                <div>
+                    <img src="https://thumbs.dreamstime.com/b/cartoon-electrician-working-meter-box-young-man-wearing-hard-hat-goggles-electrical-wiring-339592162.jpg"></img>
+                    <div>
+                        <h4>Vivek vardhan</h4>
+                        <p class="badge" style="background-color: green;">Electrician</p>
+                    </div>
+                </div>
+                <div>
+                    <p>Over a 12 years of service</p>
+                    <p>📈 12 Years of Experience</p>
+                    <p>🏡 20 Properties</p>
+                </div>
+            </div>
+            </a>
+            <a href="./Marketing Experts.html">
+            <div class="testimonial-card" style="border-color: #1a3e83;">
+                <div>
+                    <img src="https://img.freepik.com/premium-vector/cute-security-guard-monitoring-premises-cartoon-vector_1022901-115691.jpg"></img>
+                    <div>
+                        <h4>Jordon and co</h4>
+                        <p class="badge" style="background-color: green;">Security Team</p>
+                    </div>
+                </div>
+                <div>
+                    <p>Expertise trained Team</p>
+                    <p>📈 15 Years of Experience</p>
+                    <p>🏡 30 Properties</p>
+                </div>
+            </div>
+            </a>
+            <a href="./Marketing Experts.html">
+            <div class="testimonial-card" style="border-color: #1a3e83;">
+                <div>
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/015/070/490/small/plumber-man-face-icon-cartoon-style-vector.jpg"></img>
+                    <div>
+                        <h4>Shaik Ali</h4>
+                        <p class="badge" style="background-color: green;">Plumber</p>
+                    </div>
+                </div>
+                <div>
+                    <p> Best Plumber in Hyderabad</p>
+                    <p>📈 10 Years of Experience</p>
+                    <p>🏡 10 Properties</p>
+                </div>
+            </div>
+            </a>
+            
+            <div class="see-all-box-two">
+                <a href="./Marketing Experts.html">
+                    <img src="image/see-all.png" alt="See All Properties">
+                </a>
+            </div>
+        </div>
+        <div class="testimonial-carousel">
+            <button class="carousel-prev" id="prevTestimonial3"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-next" id="nextTestimonial3"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <section class="banner">
+        <div class="content">
+            <h1>Own A Business,<br>Shape Your Future</h1>
+            <p style="color: #fff;">Submit Your Inquiry And Explore Top Franchise Opportunities Hassle-Free</p>
+            <a href="franchise.html">
+                <button class="cta-button">Enquiry Now</button>
+            </a>
+        </div>
+        <div class="image-container2">
+            <img src="./image/banner.jpg" alt="Business Meeting">
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Search Section -->
+            <div class="footer-section">
+                <h3>SEARCH</h3>
+                <div class="search-box">
+                    <input type="text" placeholder="Search For State">
+                    <button>Search</button>
+                </div>
+            </div>
+
+            <!-- Find Property & List Property -->
+            <div class="footer-section">
+                <h3>FIND PROPERTY</h3>
+                <p>Select From Thousands Of Options, Without Brokerage.</p>
+                <button class="action-button"> <a href="./Property list.html">Enquiry Now</a></button>
+
+                <h3 style="margin-top: 10px;">LIST YOUR PROPERTY</h3>
+                <p>For Free. Without Any Brokerage.</p>
+                <button class="action-button"> <a href="#">Post Now</a></button>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h3>CONTACT US</h3>
+                <p>Toll Free - 1800 41 99099</p>
+                <p>9:30 AM To 6:30 PM (Mon-Sun)</p>
+                <p>Email - feedback@propertysr.com</p>
+
+                <h3>FOLLOW US</h3>
+                <div class="social-icons">
+    <a href="https://www.facebook.com/" target="_blank" class="social-link">
+        <i class="fa-brands fa-facebook-f"></i>
+    </a> <!-- Facebook -->
+    <a href="https://www.instagram.com/" target="_blank" class="social-link">
+        <i class="fa-brands fa-instagram"></i>
+    </a> <!-- Instagram -->
+    <a href="https://twitter.com/" target="_blank" class="social-link">
+        <i class="fa-brands fa-twitter"></i>
+    </a> <!-- X (Twitter) -->
+</div>
+
+            </div>
+
+            <!-- Company Links -->
+            <div class="footer-section">
+                <h3>COMPANY</h3>
+                <ul>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">For Partners</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Annual Return</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Unsubscribe</a></li>
+                    <li><a href="#">Merger Hearing Advertisement</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="left"><b><a href="https://propertysr.com/" target="_blank">©WEEKDAYS PROPERTIES,</a></b> All Rights Reserved.</span>
+            <span class="right">Designed By <b><a href="https://www.potlatechsolutions.com/" target="_blank">POTLA TECH SOLUTIONS Pvt. Ltd.</a></b>
+            </span>
+        </div>
+     
+    </footer>
+
+
+    <!-- jQuery (Required for Owl Carousel) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+        integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="script.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#categoryCarousel").owlCarousel({
+                loop: false,  // Infinite loop
+                margin: 40,  // Spacing between items
+                nav: false,  // Hide default nav buttons
+                dots: false,  // Show pagination dots
+                autoplay: false,
+                autoplayTimeout: 3000, // Auto-scroll every 3s
+                autoplayHoverPause: true,
+                responsive: {
+                    0: { items: 1 },   // 1 item on small screens
+                    600: { items: 2 }, // 2 items on tablets
+                    1000: { items: 3 } // 3 items on desktops
+                }
+            });
+
+            // Custom Navigation Buttons
+            $("#prevCategory").click(function () {
+                $("#categoryCarousel").trigger("prev.owl.carousel");
+            });
+
+            $("#nextCategory").click(function () {
+                $("#categoryCarousel").trigger("next.owl.carousel");
+            });
+        });
+
+        $(document).ready(function () {
+            $("#realEstateCarousel").owlCarousel({
+                loop: false,  // Infinite loop
+                margin: 40,  // Spacing between items
+                nav: false,  // Hide default nav buttons
+                dots: false,  // Show pagination dots
+                autoplay: false,
+                autoplayTimeout: 3000, // Auto-scroll every 3s
+                autoplayHoverPause: true,
+                responsive: {
+                    0: { items: 1 },   // 1 item on small screens
+                    600: { items: 2 }, // 2 items on tablets
+                    1000: { items: 3 } // 3 items on desktops
+                }
+            });
+
+            // Custom Navigation Buttons
+            $("#prevRealEstate").click(function () {
+                $("#realEstateCarousel").trigger("prev.owl.carousel");
+            });
+
+            $("#nextRealEstate").click(function () {
+                $("#realEstateCarousel").trigger("next.owl.carousel");
+            });
+        });
+
+
+        // TESTIMONIAL 
+        $(document).ready(function () {
+            $("#testimonialCarousel").owlCarousel({
+                loop: false,
+                margin: 20,
+                nav: false,
+                dots: false,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+
+            $('#prevTestimonial').click(function () {
+                $("#testimonialCarousel").trigger('prev.owl.carousel');
+            });
+
+            $('#nextTestimonial').click(function () {
+                $("#testimonialCarousel").trigger('next.owl.carousel');
+            });
+        });
+
+        $(document).ready(function () {
+            $("#featuredProjectCarousel").owlCarousel({
+                loop: false,  // Infinite loop
+                margin: 40,  // Spacing between items
+                nav: false,  // Hide default nav buttons
+                dots: false,  // Show pagination dots
+                autoplay: false,
+                autoplayTimeout: 3000, // Auto-scroll every 3s
+                autoplayHoverPause: true,
+                responsive: {
+                    0: { items: 1 },   // 1 item on small screens
+                    600: { items: 2 }, // 2 items on tablets
+                    1000: { items: 3 } // 3 items on desktops
+                }
+            });
+
+            // Custom Navigation Buttons
+            $("#prevFeaturedProject").click(function () {
+                $("#featuredProjectCarousel").trigger("prev.owl.carousel");
+            });
+
+            $("#nextFeaturedProject").click(function () {
+                $("#featuredProjectCarousel").trigger("next.owl.carousel");
+            });
+        });
+
+
+        // TESTIMONIAL 
+        $(document).ready(function () {
+            $("#testimonialCarousel2").owlCarousel({
+                loop: false,  // Infinite loop
+                margin: 40,  // Spacing between items
+                nav: false,  // Hide default nav buttons
+                dots: false,  // Show pagination dots
+                autoplay: false,
+                autoplayTimeout: 3000, // Auto-scroll every 3s
+                autoplayHoverPause: true,
+                responsive: {
+                    0: { items: 1 },   // 1 item on small screens
+                    600: { items: 2 }, // 2 items on tablets
+                    1000: { items: 3 } // 3 items on desktops
+                }
+            });
+
+            $('#prevTestimonial2').click(function () {
+                $("#testimonialCarousel2").trigger('prev.owl.carousel');
+            });
+
+            $('#nextTestimonial2').click(function () {
+                $("#testimonialCarousel2").trigger('next.owl.carousel');
+            });
+        });
+
+        // TESTIMONIAL 
+        $(document).ready(function () {
+            $("#testimonialCarousel3").owlCarousel({
+                loop: false,  // Infinite loop
+                margin: 40,  // Spacing between items
+                nav: false,  // Hide default nav buttons
+                dots: false,  // Show pagination dots
+                autoplay: false,
+                autoplayTimeout: 3000, // Auto-scroll every 3s
+                autoplayHoverPause: true,
+                responsive: {
+                    0: { items: 1 },   // 1 item on small screens
+                    600: { items: 2 }, // 2 items on tablets
+                    1000: { items: 3 } // 3 items on desktops
+                }
+            });
+
+            $('#prevTestimonial3').click(function () {
+                $("#testimonialCarousel3").trigger('prev.owl.carousel');
+            });
+
+            $('#nextTestimonial3').click(function () {
+                $("#testimonialCarousel3").trigger('next.owl.carousel');
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

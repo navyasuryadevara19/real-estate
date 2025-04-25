@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>3 BHK Apartment in Madhapur</title>
+    <link href="./image/title.jpeg" rel="icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+        }
+    .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 1rem 2rem;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            position: sticky;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    /* Logo */
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    /* Navigation Links */
+    .nav-links {
+        list-style: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-links li {
+        margin-left: 2rem;
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+    }
+
+    .nav-links li a {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        color: black;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+        color: #f64646;
+    }
+
+    /* Post Button */
+    .nav-links li .post-btn {
+        background-color: #f64646;
+        padding: 10px 15px;
+        border-radius: 8px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-links li .post-btn:hover {
+        background-color: #c43434;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .hamburger .line {
+        width: 30px;
+        height: 3px;
+        background-color: black;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 1024px) {
+        .navbar {
+            padding: 1rem;
+            
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 75%;
+            background-color: rgba(0, 0, 0, 0.9);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: right 0.3s ease-in-out;
+        }
+
+        .nav-links.active {
+            right: 0;
+        }
+
+        .nav-links li {
+            margin: 1.5rem 0;
+        }
+
+        .nav-links li a {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-links li .post-btn {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+        }
+
+        .hamburger {
+            display: flex;
+            z-index: 1100;
+        }
+
+        /* Hamburger Animation */
+        .hamburger.active .line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        .hamburger.active .line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .line:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .nav-links {
+            width: 100%;
+        }
+
+        .nav-links li a {
+            font-size: 1rem;
+        }
+
+        .nav-links li .post-btn {
+            font-size: 1rem;
+            padding: 10px 16px;
+        }
+    }
+
+
+    
+        .property-heading {
+            margin-bottom: 20px;
+        }
+        .gallery-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 10px;
+        }
+        .gallery-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .large {
+            grid-row: span 2;
+        }
+        .more-images {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+        .more-images::after {
+            content: "20+ More";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+        .property-price {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .best-price {
+            color: green;
+        }
+        .card-section-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .contact-btn {
+            background-color: #f64646;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .bg-white {
+            background-color: white !important;
+        }
+        .text-align-right {
+            text-align: right;
+        }
+        .card {
+            border: none !important;
+        }
+        .amenities-container {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+    .breadcrumb {
+      background-color:white;
+      padding: 0;
+      margin-bottom: 0;
+    }
+
+    .property-heading h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    .property-address {
+      color: #6c757d;
+    }
+
+    .property-images img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .property-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .best-price {
+      font-size: 0.95rem;
+      color: #6c757d;
+    }
+
+    .details-list li {
+      padding: 6px 0;
+    }
+
+    .contact-btn {
+      background-color: #f64646;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      background-color: #b52a37;
+    }
+
+    .description-title,
+    .amenities-title,
+    .similar-properties-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: rgb(5, 5, 148);
+    }
+
+    .similar-property-card {
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 15px;
+      background-image:linear-gradient(skyblue,white);
+    }
+
+    .similar-property-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .amenities-list span {
+      display: inline-block;
+      background-color: #e9ecef;
+      padding: 6px 10px;
+      border-radius: 20px;
+      margin: 5px 5px 5px 0;
+    } .card-section-title {
+      font-size: 0.95rem;
+      color: #6c757d;
+    }
+    .card-section-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .btn-contact {
+      background-color: #f64646;
+      color: #fff;
+      border-radius: 5px;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+    .btn-contact:hover {
+      background-color: #b52a37;
+    }
+    .icon-link {
+      color: #6c757d;
+      font-size: 1.2rem;
+    }
+    .icon-link:hover {
+      color: #333;
+    }
+    .amenity-title {
+      font-weight: 600; /* Bold text */
+      font-size: 1rem;  /* Adjust as needed */
+      color: #000;      /* Main text color */
+    }
+    .amenity-subtitle {
+      font-size: 0.875rem; /* Slightly smaller text */
+      text-align: justify;
+      text-justify: inter-word;
+      color: #6c757d;  
+    }
+
+    /* Responsive spacing adjustments */
+    @media (min-width: 768px) {
+      .property-images img {
+        height: 250px;
+      }
+    }
+    .icon-link {
+            text-decoration: none !important;
+            font-size: 1.5rem;
+        }
+        .breadcrumb {
+            background-color: transparent !important;
+            padding: 0;
+            margin-bottom: 0;
+        }
+        .breadcrumb a {
+            text-decoration: none !important;
+        }
+
+
+.footer {
+    background-color: #ffffff;
+    color: #333;
+    padding-top: 8rem;
+    text-align: left;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.footer-bottom {
+    display: flex;
+    justify-content: space-between; /* Aligns left and right */
+    align-items: center;
+    background-color: #0056b3; /* Adjust background color */
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 14px;
+}
+.footer-bottom span{
+    color: white;
+}
+.left {
+    margin-left: 50px;
+    text-align: left;
+}
+
+.right {
+    margin-right: 60px;
+    text-align: right;
+}
+/* Footer Sections */
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Search Box */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-box input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 160px;
+}
+
+.search-box button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #999;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background-color: #777;
+}
+
+/* Action Buttons */
+.action-button {
+    background-color: #999;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+}
+
+.action-button:hover {
+    background-color: #777;
+}
+
+/* Social Icons */
+.social-icons {
+    display: flex;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.action-button a{
+    text-decoration: none;
+    color: inherit;
+}
+/* Company Links */
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+    color: #333;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+            display: flex;
+            justify-content: space-between; /* Aligns left and right */
+            align-items: center;
+            background-color: #0056b3; /* Adjust background color */
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 14px;
+        }
+        .footer-bottom span{
+            color: white;
+        }
+        .left {
+            margin-left: 50px;
+            text-align: left;
+        }
+
+        .right {
+            margin-right: 60px;
+            text-align: right;
+        }
+.more-images:active::after {
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffd700; /* Gold color */
+}
+.popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            z-index: 1000;
+        }
+        .popup img {
+            width: 120px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .popup-close {
+            display: block;
+            margin-top: 20px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 10px 20px;
+            background: red;
+            border-radius: 5px;
+        }
+        /* Fullscreen Image Popup */
+        .popup-fullscreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+        .popup-fullscreen img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .popup-fullscreen span {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .search-box {
+            justify-content: center;
+        }
+
+        .social-icons {
+            justify-content: center;
+        }
+
+        .left, .right {
+            margin: 10px 0;
+        }
+
+        /* Center the "Enquire Now" and "Post Now" buttons */
+        .action-button {
+            margin: 10px auto; /* Center the button horizontally */
+            width: fit-content; /* Ensure the button width adjusts to content */
+        }
+        #popup-images {
+   
+   flex-direction: column; 
+   overflow-y: scroll; 
+    
+   }
+    }
+    /* Outer image container */
+        .image-container {
+            position: relative;
+            width: 500px;
+            height: 300px;
+            cursor: pointer;
+        }
+
+        /* Outer image */
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Inner image styling */
+        .inner-image {
+            position: absolute;
+            top: 20px;  
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        /* Gallery modal styling */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1050;
+        }
+
+        .gallery-modal:target {
+            display: flex;
+        }
+
+        .gallery-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .gallery-content img {
+            width: 400px;
+            height: 400px;
+            object-fit: contain;
+        }
+
+        /* Close button */
+        .close-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            padding: 5px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Gallery images styling */
+        .gallery-content .gallery-images {
+            display: flex;
+            gap: 10px;
+        }
+
+        .gallery-content .gallery-images img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            cursor: pointer;
+        }
+
+        .footer-bottom .left a{
+            text-decoration: none;
+            color: inherit;
+        }
+        .footer-bottom .right a{
+            text-decoration: none;
+            color: inherit;
+        }
+        .carousel-item img {
+    object-fit: contain;
+    background-color: #000;
+  }
+    </style>
+</head>
+<body>
+  
+    <nav class="navbar">
+        
+        <div class="logo">
+            <a href="./index.html">
+                <img src="image/logo2.jpeg" alt="Logo">
+            </a>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a class="post-btn" href="./broker/broker_login.html"><i class="fa-solid fa-plus"></i> Post Property</a></li>
+            <li><a href="#"><i class="fa-solid fa-bookmark"></i> Saved</a></li>
+            <li><a href="#"><i class="fa-solid fa-bars"></i> Menu</a></li>
+            <li><a href="./login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></li>
+        </ul>
+    
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+    
+
+  <div class="container mt-5">
+    <!-- Breadcrumb and Post Date -->
+    <div class="row align-items-center mb-3 ms-1">
+      <div class="col-md-8">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="./index.html" style="color: #444;">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="#" style="color: #444;">Buy A Land In Hyderabad</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              3 BHK Apartment in Madhapur
+            </li>
+          </ol>
+      </div>
+      <div class="col-md-4 text-md-end text-muted">
+        Posted On: 15th March 2025
+      </div>
+    </div>
+
+
+<div class="container">
+    <div class="row mb-4">
+        <!-- Left Column: Property Info & Images -->
+        <div class="col-md-8 property-heading">
+            <h1 style="color: rgb(5, 5, 148);">3 BHK Apartment in Madhapur</h1>
+            <p class="property-address">H. No: 1-20/7/187/401, Jai Hind Society, Madhapur, Hyderabad, Telangana 500081</p>
+            
+             <!-- Image Gallery -->
+             <div class="gallery-container">
+              <div class="gallery-wrapper">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="large" alt="Large Image">
+                  <img src="https://t4.ftcdn.net/jpg/04/73/72/11/360_F_473721132_I9LNMCvx7Du6EdJNH91EywcNHzgtEclz.jpg" alt="Small Image">
+                  <div class="more-images" id="showMore">
+                      <img src="https://plus.unsplash.com/premium_photo-1661883982941-50af7720a6ff?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHJlYWwlMjBlc3RhdGUlMjBwaG90b2dyYXBoeXxlbnwwfHwwfHx8MA%3D%3D"alt="More Images">
+                  </div>
+               </div>
+          </div>
+          <div class="popup" id="popup">
+              <div id="popup-images">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+                  <img src="https://wallpapers.com/images/hd/real-estate-tropical-mansion-20c9os156eqcqd4j.jpg" class="popup-img" alt="Popup Image">
+              
+                </div>
+              <span class="popup-close" id="closePopup">Close</span>
+          </div>
+                 <!-- Fullscreen Image Viewer -->
+                 <div class="popup-fullscreen" id="fullscreenPopup">
+                    <img id="fullscreenImage" alt="Fullscreen Image">
+                    <span id="closeFullscreen" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 2rem; cursor: pointer; z-index: 1056;">&times;</span>
+                </div>
+                <div class="modal fade" id="fullscreenCarouselModal" tabindex="-1" aria-hidden="true">
+                   <div class="modal-dialog modal-fullscreen">
+                   <div class="modal-content bg-dark">
+                      <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3" aria-label="Close" id="closeFullscreen1"></button>
+                      <div class="modal-body p-0">
+                        <div id="fullscreenCarousel" class="carousel slide" data-bs-ride="carousel">
+                          <div class="carousel-inner" id="fullscreenCarouselInner"></div>
+                
+                          <!-- Carousel Controls -->
+                          <button class="carousel-control-prev" type="button" data-bs-target="#fullscreenCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                          </button>
+                          <button class="carousel-control-next" type="button" data-bs-target="#fullscreenCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+      </div>
+        
+        <!-- Right Column: Price & Details -->
+        <div class="col-md-4 mt-5">
+            <div class="text-align-right">
+                <span class="property-price">₹75 Lakhs</span><br>
+                <span class="best-price">Best Price</span>
+            </div>
+            <div class=" p-3 rounded ">
+                <div class="bg-white rounded p-3 mb-3">
+                    <div class="row text-center mb-2">
+                        <div class="col-6">
+                            <div class="card-section-value">₹75 Lakhs</div>
+                            <div class="card-section-title">Price</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card-section-value">1,500 Sq. Ft.</div>
+                            <div class="card-section-title">Area</div>
+                        </div>
+                    </div>
+                    <div class="row text-center mb-2">
+                        <div class="col-6">
+                            <div class="card-section-value">Apartment</div>
+                            <div class="card-section-title"> Type</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card-section-value">West</div>
+                            <div class="card-section-title">Facing</div>
+                        </div>
+                    </div>
+                    <div class="row text-center mb-2">
+                        <div class="col-6">
+                            <div class="card-section-value">100m</div>
+                            <div class="card-section-title">Road Size</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card-section-value">5</div>
+                            <div class="card-section-title">Extent</div>
+                        </div>
+                    </div>
+                    <div class="row text-center mb-3">
+                        <div class="col-6">
+                            <div class="card-section-value">3 BHK</div>
+                            <div class="card-section-title">BHK</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-around">
+                    <a href="./contact pop.html"><button class="contact-btn w-100">Contact</button></a>
+                    <a href="#" class="icon-link"><i class="fas fa-share"></i></a>
+                    <a href="#" class="me-3 icon-link "><i class="far fa-bookmark"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Left Column: Description, Amenities, Map -->
+                <div class="mt-5 col-lg-8 col-md-12">
+                    <!-- Description -->
+                    <div class="bg-white p-4 rounded shadow-sm mb-4">
+                        <h2 class="description-title">Description</h2>
+                        <p class="amenity-subtitle">
+                            Spacious and well-ventilated 3 BHK apartment located in the heart of Hyderabad. The property features modern interiors, a modular kitchen, and a balcony with a stunning view. Situated in a secure gated community with top-notch amenities including a swimming pool, gym, and landscaped gardens. Ideal for families looking for a serene yet connected lifestyle.
+                        </p>
+                    </div>
+        
+                    <!-- Amenities -->
+                    <div class="amenities-container mt-4 mb-4">
+                        <h2 class="mb-4" style="color: rgb(5, 5, 148);">Amenities</h2>
+                        <div class="row justify-content-center">
+                            <!-- Amenity Items -->
+                            <div class="col-6 col-sm-4 col-md-4 mb-4">
+                                <div class="amenity-title text-center">24/7 CCTV Surveillance</div>
+                                <div class="amenity-subtitle text-center">Clubhouse</div>
+                            </div>
+                            <div class="col-6 col-sm-4 col-md-4 mb-4">
+                                <div class="amenity-title text-center">Continuous Water Supply</div>
+                                <div class="amenity-subtitle text-center">Covered Parking</div>
+                            </div>
+                            <div class="col-6 col-sm-4 col-md-4 mb-4">
+                                <div class="amenity-title text-center">Full Electricity Backup</div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Map -->
+                    <div class="bg-white p-3 rounded shadow-sm mb-4 text-center">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.287667563703!2d78.39912837435925!3d17.49377608341174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb91f30076cb0f%3A0xd71e8dba19e3b3ae!2sKPHB%20METRO!5e0!3m2!1sen!2sin!4v1742379997364!5m2!1sen!2sin" 
+                                style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Right Column: Similar Properties -->
+                <div class="mt-5 col-lg-4 col-md-12 text-center">
+                    <h3 class="similar-properties-title">Similar Type Of Properties</h3>
+                    
+                    <!-- Property Card 1 -->
+                    <div class="similar-property-card bg-white p-3 rounded shadow-sm mb-4">
+                        <img src="https://ucarecdn.com/6d5acac8-3ebf-40cd-ba8e-c071564d7397/" alt="Sunshine Desire" class="img-fluid rounded"/>
+                        <div class="mt-2">
+                            <h5 class="mb-1">Sunshine Destino</h5>
+                            <p class="mb-1 text-muted">Nanakaramguda, West Hyderabad</p>
+                            <p class="mb-1">₹1.21 Cr - ₹3.32 Cr</p>
+                            <p class="mb-1">Spacious 3 & 4 BHK Apartments</p>
+                           <a href="./contact pop.html"> <button class="contact-btn btn btn-primary w-100">Contact</button></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Property Card 2 -->
+                    <div class="similar-property-card bg-white p-3 rounded shadow-sm">
+                        <img src="https://www.premium-villas-costa-blanca.com/imagenes/upload/premiumvillas/premium-villas-costa-blanca-propiedades_63bea909ea2e8-681x532.jpg" alt="Sunshine Heights" class="img-fluid rounded"/>
+                        <div class="mt-2">
+                            <h5 class="mb-1">Sunshine Heights</h5>
+                            <p class="mb-1 text-muted">Hitech City, Hyderabad</p>
+                            <p class="mb-1">₹1.21 Cr - ₹3.32 Cr</p>
+                            <p class="mb-1">Spacious 3 & 4 BHK Apartments</p>
+                            <a href="./contact pop.html"><button class="contact-btn btn btn-primary w-100">Contact</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+      </div>
+    </div>
+</div>
+<footer class="footer">
+  <div class="footer-container">
+      <!-- Search Section -->
+      <div class="footer-section">
+          <h3>SEARCH</h3>
+          <div class="search-box">
+              <input type="text" placeholder="Search For State">
+              <button>Search</button>
+          </div>
+      </div>
+
+      <!-- Find Property & List Property -->
+      <div class="footer-section">
+          <h3>FIND PROPERTY</h3>
+          <p>Select From Thousands Of Options, Without Brokerage.</p>
+          <button class="action-button"><a href="./Property list.html">Enquiry Now</a></button>
+
+          <h3 style="margin-top: 10px;">LIST YOUR PROPERTY</h3>
+          <p>For Free. Without Any Brokerage.</p>
+          <button class="action-button"><a href="#">Post Now</a></button>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="footer-section">
+          <h3>CONTACT US</h3>
+          <p>Toll Free - 1800 41 99099</p>
+          <p>9:30 AM To 6:30 PM (Mon-Sun)</p>
+          <p>Email - feedback@propertysr.com</p>
+
+          <h3>FOLLOW US</h3>
+          <div class="social-icons">
+              <a href="https://www.facebook.com/" style="text-decoration: none; color: #666;"><i class="fa-brands fa-facebook-f"></i></a> <!-- Facebook -->
+              <a href="https://www.instagram.com/accounts/login/?hl=en" style="text-decoration: none; color: #666;"><i class="fa-brands fa-instagram"></i></a> <!-- Instagram -->
+              <a href="https://x.com/i/flow/login?lang=en" style="text-decoration: none; color: #666;"><i class="fa-brands fa-twitter"></i></a> <!-- X (Twitter) -->
+          </div>
+      </div>
+
+      <!-- Company Links -->
+      <div class="footer-section">
+          <h3>COMPANY</h3>
+            <p><a href="#" style="text-decoration: none; color: #666;">Careers</a></p>
+            <p><a href="#" style="text-decoration: none; color: #666;">About Us</a></p>
+            <p><a href="#" style="text-decoration: none; color: #666;">For Partners</a></p>
+            <p><a href="#" style="text-decoration: none; color: #666;">Terms</a></p>
+            <p><a href="#" style="text-decoration: none; color: #666;">Annual Return</a></p>
+            <p><a href="#" style="text-decoration: none; color: #666;">Privacy Policy</a></p>
+            <p><a href="#" style="text-decoration: none; color: #666;">Contact Us</a></p>
+            <p><a href="#" style="text-decoration: none; color: #666;">Unsubscribe</a></p>
+            <p><a href="#" style="text-decoration: none; color: #666;">Merger Hearing Advertisement</a></p>
+      </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="left"><b><a href="https://propertysr.com/" target="_blank">©WEEKDAYS PROPERTIES,</a></b> All Rights Reserved.</span>
+    <span class="right">Designed By <b><a href="https://www.potlatechsolutions.com/" target="_blank">POTLA TECH SOLUTIONS Pvt. Ltd.</a></b>
+    </span>
+</div>
+</footer>
+
+<script>
+    const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const moreImagesButton = document.getElementById("showMore");
+    const popup = document.getElementById("popup");
+    const popupImages = document.querySelectorAll(".popup-img");
+    const fullscreenPopup = document.getElementById("fullscreenPopup");
+    const fullscreenImage = document.getElementById("fullscreenImage");
+    const closePopup = document.getElementById("closePopup");
+    const closeFullscreen = document.getElementById("closeFullscreen");
+
+    // Ensure popups are hidden on page load
+    popup.style.display = "none";
+    fullscreenPopup.style.display = "none";
+
+    // Show popup when clicking "More Images"
+    moreImagesButton.addEventListener("click", function () {
+        popup.style.display = "flex";
+    });
+
+    // Close popup when clicking "Close"
+    closePopup.addEventListener("click", function () {
+        popup.style.display = "none";
+    });
+
+    // // Click on an image in the popup to view fullscreen
+    // popupImages.forEach((img) => {
+    //     img.addEventListener("click", function () {
+    //         fullscreenImage.src = this.src;
+    //         fullscreenPopup.style.display = "flex";
+    //     });
+    // });
+
+    // Close fullscreen popup
+    closeFullscreen.addEventListener("click", function () {
+        fullscreenPopup.style.display = "none";
+    });
+
+    // // Close popup if clicking outside the fullscreen image
+    // fullscreenPopup.addEventListener("click", function (event) {
+    //     if (event.target === fullscreenPopup) {
+    //         fullscreenPopup.style.display = "none";
+    //     }
+    // });
+});
+
+</script> 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const popupImages = document.querySelectorAll("#popup-images .popup-img");
+      const fullscreenCarouselInner = document.getElementById("fullscreenCarouselInner");
+      const fullscreenModalEl = document.getElementById("fullscreenCarouselModal");
+      const fullscreenModal = new bootstrap.Modal(fullscreenModalEl);
+  
+      const imageUrls = Array.from(popupImages).map(img => img.src);
+  
+      popupImages.forEach((img, index) => {
+        img.addEventListener("click", function () {
+          fullscreenCarouselInner.innerHTML = "";
+  
+          imageUrls.forEach((src, i) => {
+            const activeClass = i === index ? "active" : "";
+            const carouselItem = `
+              <div class="carousel-item ${activeClass}">
+                <img src="${src}" class="d-block w-100" style="height: 100vh; object-fit: contain;" alt="Image ${i + 1}">
+              </div>
+            `;
+            fullscreenCarouselInner.insertAdjacentHTML("beforeend", carouselItem);
+          });
+  
+          fullscreenModal.show();
+  
+          const carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('fullscreenCarousel'));
+          carousel.to(index);
+        });
+      });
+  
+      // 🔧 Fix for close button
+      document.getElementById("closeFullscreen").addEventListener("click", function () {
+        fullscreenModal.hide();
+      });
+
+      document.getElementById("closeFullscreen1").addEventListener("click", function () {
+        fullscreenModal.hide();
+      });
+   
+    });
+   
+    
+    
+  </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

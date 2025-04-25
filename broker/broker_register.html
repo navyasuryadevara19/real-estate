@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Broker Register</title>
+  <link rel="stylesheet" href="broker_register.css"/>
+</head>
+<body>
+  <div class="container">
+    
+    <div class="left">
+      <img src="https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg" alt="Login">
+    </div>
+
+    <div class="right">
+      <div class="form-container">
+        <h2>Form Details</h2>
+        <form id="registerForm" onsubmit="return validateForm()">
+            <input type="text" placeholder="Name" name="name" required />
+          
+            <input
+              type="text"
+              placeholder="Phone Number"
+              name="phone"
+              pattern="\d{10}"
+              title="Phone number must be 10 digits"
+              required
+            />
+          
+            <!-- Email Field -->
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              id="email"
+              required
+            />
+            <div id="emailError" class="error"></div>
+          
+            <select name="profession" required>
+              <option value="">Profession Type</option>
+              <option value="Owner">Owner</option>
+              <option value="Marketer">Marketer</option>
+            </select>
+          
+            <input
+              type="password"
+              placeholder="Password"
+              id="password"
+              name="password"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+            />
+            <div id="passwordError" class="error"></div>
+          
+            <label>Choose a Price Plan:</label>
+    <div class="price-options">
+      <div class="price-box" onclick="selectPrice('5000')">
+        <p>₹5000/Month</p>
+        <small>Professionals</small>
+      </div>
+
+      <div class="price-box" onclick="selectPrice('8000')">
+        <p>₹8000/Month</p>
+        <small>Marketing Experts</small>
+      </div>
+
+      <div class="price-box" onclick="selectPrice('15000')">
+        <p>₹15000/Month</p>
+        <small>Advanced Plan</small>
+      </div>
+    </div>
+
+    <input type="hidden" id="selectedPrice" name="selectedPrice" />
+    <div id="priceError" class="error"></div>
+          
+            <button type="submit">Pay</button>
+          </form>
+          
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectPrice(price) {
+      document.getElementById('selectedPrice').value = price;
+
+      const boxes = document.querySelectorAll('.price-box');
+      boxes.forEach(box => box.classList.remove('selected'));
+
+      const selectedBox = Array.from(boxes).find(box =>
+        box.innerText.includes(price)
+      );
+      if (selectedBox) {
+        selectedBox.classList.add('selected');
+      }
+    }
+
+    function validateForm() {
+  const name = document.forms['registerForm']['name'].value;
+  const phone = document.forms['registerForm']['phone'].value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const selectedPrice = document.getElementById('selectedPrice').value;
+  const passwordError = document.getElementById('passwordError');
+  const emailError = document.getElementById('emailError');
+  const priceError = document.getElementById('priceError');
+
+  passwordError.textContent = '';
+  emailError.textContent = '';
+  priceError.textContent = '';
+
+  // ✅ Name validation: letters and spaces only
+  const nameRegex = /^[A-Za-z\s]+$/;
+  if (!nameRegex.test(name)) {
+    alert('Name must contain letters only.');
+    return false;
+  }
+
+  // 📱 Phone validation
+  const phoneRegex = /^\d{10}$/;
+  if (!phoneRegex.test(phone)) {
+    alert('Phone number must be exactly 10 digits.');
+    return false;
+  }
+
+  // 📧 Email domain validation
+  const allowedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com'];
+  const domain = email.split('@')[1];
+  if (!allowedDomains.includes(domain)) {
+    emailError.textContent = 'Email must be from gmail.com, yahoo.com, or hotmail.com.';
+    return false;
+  }
+
+  // 🔒 Password format validation
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  if (!passwordRegex.test(password)) {
+    passwordError.textContent =
+      'Password must be at least 8 characters, include 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character.';
+    return false;
+  }
+
+  // 🔐 Password match
+  if (password !== confirmPassword) {
+    passwordError.textContent = 'Passwords do not match.';
+    return false;
+  }
+
+  // 💰 Price plan selected
+  if (!selectedPrice) {
+    priceError.textContent = 'Please select a price plan before submitting.';
+    return false;
+  }
+
+  alert('Form submitted successfully!');
+  return true;
+}
+  </script>
+</body>
+</html>

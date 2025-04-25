@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broker Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f3f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: row;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 260px;
+            background-color: #1e3a8a;
+            color: white;
+            transition: width 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 14px 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 5px 0;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #3b82f6;
+            border-radius: 10px;
+        }
+
+        .sidebar-toggler {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .admin-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .logout-btn {
+            background-color: #3b82f6;
+            border: none;
+            padding: 5px 10px;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 30px;
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-toggler {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                z-index: 999;
+                top: 0;
+                left: 0;
+                transform: translateX(0);
+            }
+
+            .sidebar.hidden {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                margin-top: 30px;
+            }
+        }
+
+        .card-stats {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+        }
+
+        .tab-container {
+            background-color: #f8f9fa;
+            border-radius: 0.75rem;
+            padding: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .tab-button {
+            border: none;
+            background-color: #f8f9fa;
+            padding: 10px;
+            font-weight: 500;
+            flex: 1;
+            color: #6c757d;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-button:hover {
+            background-color: #e9ecef;
+        }
+
+        .tab-button.active {
+            background-color: white;
+            color: #000000;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input {
+            background-color: #f8f9fa;
+            border-radius: 0.75rem;
+            border: 1px solid #dee2e6;
+            padding: 10px 15px;
+            width: 100%;
+        }
+
+        .card-attached {
+            border-radius: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .card-left {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .card-right {
+            padding: 20px;
+        }
+
+        .agent-initial {
+            background-color: #e2e6ea;
+            color: #333;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .expert-badge {
+            background-color: #e0f0ff;
+            color: #007bff;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+
+        .info-line {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        .info-line i {
+            margin-right: 6px;
+            color: #6c757d;
+        }
+
+        .action-btn {
+            padding: 8px 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            flex: 1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+        }
+
+        .status-message {
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .container {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+        }
+
+        small {
+            font-size: .875rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .rejection-reason {
+            font-size: 12px;
+            color: #dc3545;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #f8d7da;
+            border-radius: 5px;
+            font-style: italic;
+        }
+
+        .modal-body small {
+            display: block;
+            margin-top: 5px;
+        }
+
+        .approved-badge {
+            background-color: #d4edda;
+            color: #155724;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+
+        .rejected-badge {
+            background-color: #f8d7da;
+            color: #dc3545;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+        .pending-badge {
+            background-color: #ffff92;
+            color: rgb(73, 73, 39);
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #fff;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+        }
+        /* Modal Content */
+.modal-content {
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Input and Select Styling */
+.form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.form-control,
+.form-select {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  padding: 10px 12px;
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.btn-outline-secondary {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-content {
+                margin-left: 0;
+                padding: 30px 20px;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggler {
+                display: block;
+            }
+
+            .card-stats {
+                margin-bottom: 15px;
+            }
+
+            .card-attached .row > div {
+                border-bottom: 1px solid #dee2e6;
+            }
+
+            .card-left, .card-right {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 260px;
+            }
+
+            .tab-button {
+                padding: 8px 5px;
+                font-size: 14px;
+            }
+
+            .action-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            .agent-initial {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .card-left {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .info-line {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h4.fw-bold {
+                font-size: 1.25rem;
+            }
+
+            .tab-container {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .tab-button {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .action-btn {
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .card-stats h3 {
+                font-size: 1.5rem;
+            }
+
+            .expert-badge {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+            .modal-content {
+    padding: 20px 16px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebarToggler" class="btn btn-primary sidebar-toggler" onclick="toggleSidebar(event)" style="display: block;">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="layout" onclick="handleOutsideClick(event)">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3" onclick="event.stopPropagation()">
+            <div>
+                <a href="./admin_dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a class="active" href="./brokerManagement.html"><i class="fas fa-user-tie me-2"></i>Broker Management</a>
+                <a href="./propertyManagement.html"><i class="fas fa-building me-2"></i>Property Management</a>
+                <a href="./serviceManagement.html"><i class="fas fa-tools me-2"></i>Service Management</a>
+                <a href="./paymentManagement.html"><i class="fas fa-credit-card me-2"></i>Payment Management</a>
+                <a href="./supportManagement.html"><i class="fas fa-headset me-2"></i>Support Management</a>
+                <a href="./notifications.html"><i class="fas fa-bell me-2"></i>Notifications</a>
+                <a href="./acc_settings.html"><i class="fas fa-user-cog me-2"></i>Account Settings</a>
+            </div>
+            <div class="admin-footer">
+                <div class="mb-2">
+                    <strong>Admin</strong><br />
+                    <small style="word-break: break-all;">propertysradmin@gmail.com</small>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                  </button>
+                </div>
+        </div>
+
+        <div class="main-content">
+            <h2>Broker Management</h2>
+            <p class="text-muted">Review and manage broker applications and accounts</p>
+
+            <div class="row g-3 mt-4">
+                <div class="col-md-4 col-12">
+                    <div class="card-stats">
+                        <h5 class="card-title fw-semibold">Pending</h5>
+                        <p class="text-muted small">Awaiting review</p>
+                        <h3 id="pendingCount">3</h3>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="card-stats">
+                        <h5 class="card-title fw-semibold">Approved</h5>
+                        <p class="text-muted small">Active brokers</p>
+                        <h3 id="approvedCount">0</h3>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="card-stats">
+                        <h5 class="card-title fw-semibold">Rejected</h5>
+                        <p class="text-muted small">Declined applications</p>
+                        <h3 id="rejectedCount">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <h3>Broker Applications</h3>
+                <p class="text-muted mb-4">Review and manage broker applications</p>
+
+                <input type="text" class="form-control search-input mb-3" placeholder="Search brokers..." oninput="searchBrokers(this.value)">
+
+                <div class="tab-container">
+                    <button class="tab-button active" onclick="setActiveTab('pending')">Pending</button>
+                    <button class="tab-button" onclick="setActiveTab('approved')">Approved</button>
+                    <button class="tab-button" onclick="setActiveTab('rejected')">Rejected</button>
+                </div>
+
+                <div id="pending" class="tab-content active">
+                    <div class="card-attached" data-id="1" data-status="pending">
+                        <div class="row g-0">
+                            <div class="col-md-8 col-12">
+                                <div class="card-left d-flex gap-3">
+                                    <div class="agent-initial">RS</div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center flex-wrap mb-1 gap-2">
+                                            <h5 class="mb-0">Rahul Sharma</h5>
+                                            <span class="expert-badge">Expert Pro</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="info-line"><i class="bi bi-geo-alt"></i> Mumbai, Maharashtra</div>
+                                                <div class="info-line"><i class="bi bi-clock-history"></i> Experience: 5 years</div>
+                                                <div class="info-line"><i class="bi bi-geo"></i> Areas: Mumbai, Thane</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="info-line"><i class="bi bi-telephone"></i> +91 98765 43210</div>
+                                                <div class="info-line"><i class="bi bi-house-door"></i> Expertise: Residential</div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 text-muted" style="font-size: 12px;">
+                                            <i class="bi bi-info-circle"></i> Experienced broker specializing in luxury properties
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="card-right d-flex flex-column justify-content-between h-100">
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <div><i class="bi bi-calendar3"></i> <strong>Applied:</strong></div>
+                                            <div>15/7/2023</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <div><strong>Payment:</strong></div>
+                                            <div>₹15,000</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-success action-btn" onclick="handleAction.call(this, 'approve')">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                        <button class="btn btn-danger action-btn" onclick="showRejectModal(this)">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </div>
+                                    <div class="status-message text-center"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-attached" data-id="2" data-status="pending">
+                        <div class="row g-0">
+                            <div class="col-md-8 col-12">
+                                <div class="card-left d-flex gap-3">
+                                    <div class="agent-initial">AK</div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center flex-wrap mb-1 gap-2">
+                                            <h5 class="mb-0">Anita Kumar</h5>
+                                            <span class="expert-badge">Expert Pro</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="info-line"><i class="bi bi-geo-alt"></i> Delhi, NCR</div>
+                                                <div class="info-line"><i class="bi bi-clock-history"></i> Experience: 3 years</div>
+                                                <div class="info-line"><i class="bi bi-geo"></i> Areas: Delhi, Gurgaon</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="info-line"><i class="bi bi-telephone"></i> +91 91234 56789</div>
+                                                <div class="info-line"><i class="bi bi-house-door"></i> Expertise: Commercial</div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 text-muted" style="font-size: 12px;">
+                                            <i class="bi bi-info-circle"></i> Specializes in commercial real estate
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="card-right d-flex flex-column justify-content-between h-100">
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <div><i class="bi bi-calendar3"></i> <strong>Applied:</strong></div>
+                                            <div>20/7/2023</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <div><strong>Payment:</strong></div>
+                                            <div>₹10,000</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-success action-btn" onclick="handleAction.call(this, 'approve')">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                        <button class="btn btn-danger action-btn" onclick="showRejectModal(this)">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </div>
+                                    <div class="status-message text-center"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-attached" data-id="3" data-status="pending">
+                        <div class="row g-0">
+                            <div class="col-md-8 col-12">
+                                <div class="card-left d-flex gap-3">
+                                    <div class="agent-initial">VP</div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center flex-wrap mb-1 gap-2">
+                                            <h5 class="mb-0">Vikram Patel</h5>
+                                            <span class="expert-badge">Expert Pro</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="info-line"><i class="bi bi-geo-alt"></i> Bangalore, Karnataka</div>
+                                                <div class="info-line"><i class="bi bi-clock-history"></i> Experience: 7 years</div>
+                                                <div class="info-line"><i class="bi bi-geo"></i> Areas: Bangalore, Mysore</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="info-line"><i class="bi bi-telephone"></i> +91 99876 54321</div>
+                                                <div class="info-line"><i class="bi bi-house-door"></i> Expertise: Residential</div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 text-muted" style="font-size: 12px;">
+                                            <i class="bi bi-info-circle"></i> Expert in high-end residential properties
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="card-right d-flex flex-column justify-content-between h-100">
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <div><i class="bi bi-calendar3"></i> <strong>Applied:</strong></div>
+                                            <div>25/7/2023</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <div><strong>Payment:</strong></div>
+                                            <div>₹20,000</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-3">
+                                        <button class="btn btn-success action-btn" onclick="handleAction.call(this, 'approve')">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                        <button class="btn btn-danger action-btn" onclick="showRejectModal(this)">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </div>
+                                    <div class="status-message text-center"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="approved" class="tab-content"></div>
+                <div id="rejected" class="tab-content">
+                    <div class="card-attached" data-id="1" data-status="rejected">
+                        <div class="row g-0">
+                            <div class="col-md-8 col-12">
+                                <div class="card-left d-flex gap-3">
+                                    <div class="agent-initial">VP</div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center flex-wrap mb-1 gap-2">
+                                            <h5 class="mb-0">Vikram Patel<span class="rejected-badge">Rejected</span></h5>
+                                            <span class="expert-badge">Expert Pro</span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="info-line"><i class="bi bi-geo-alt"></i> Bangalore, Karnataka</div>
+                                                <div class="info-line"><i class="bi bi-clock-history"></i> Experience: 7 years</div>
+                                                <div class="info-line"><i class="bi bi-geo"></i> Areas: Bangalore, Mysore</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="info-line"><i class="bi bi-telephone"></i> +91 99876 54321</div>
+                                                <div class="info-line"><i class="bi bi-house-door"></i> Expertise: Residential</div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 text-muted" style="font-size: 12px;">
+                                            <i class="bi bi-file-earmark"></i> New broker focusing on affordable housing segment.
+                                        </div>
+                                        <div class="rejection-reason mt-3">
+                                            Reason: Incomplete documentation and verification issues
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="card-right d-flex flex-column justify-content-between h-100">
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <div><i class="bi bi-calendar3"></i> <strong>Applied:</strong></div>
+                                            <div>25/7/2023</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <div><strong>Payment:</strong></div>
+                                            <div>₹20,000</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <div><strong>Refund:</strong></div>
+                                            <div><span class="pending-badge"><b>Pending</b></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 mt-2">
+                                        <button class="btn btn-success action-btn" onclick="handleAction.call(this, 'approve')">
+                                            <i class="bi bi-check-circle"></i>Reconsider
+                                        </button>
+                                        <button class="btn action-btn" data-bs-toggle="modal" data-bs-target="#createNotificationModal" onclick="showRejectModal(this)">
+                                            <i class="bi bi-arrow-repeat"></i>Process Refund
+                                        </button>
+                                    </div>
+                                    <div class="status-message text-center"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                    <!-- Create New Notification Modal -->
+                <div class="modal fade" id="createNotificationModal" tabindex="-1">
+                <div class="modal-dialog custom-modal-sm modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0 pb-1">
+                    <div class="w-100">
+                        <h5 class="modal-title fw-semibold" id="createNotificationLabel">Process Refund for Rejected Broker</h5>
+                        <p class="text-muted mb-1" style="font-size: 14px;">When a broker is rejected, you can process a full or partial refund of their packeage payment.</p>
+                    </div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+            
+                    <div class="modal-body">
+                    <form id="notificationForm">
+                        <div class="mb-3">
+                        <label for="notificationTitle" class="form-label"><b>Refund Amount (₹)</b></label>
+                        <input type="number" class="form-control" id="notificationTitle" placeholder="Enter amount or leave blank for full refund" min="0" step="0.01" required>
+                        <p class="text-muted mb-1" style="font-size: 14px;">Leave blank to process a full refund of their packeage payment.</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="notificationTitle" class="form-label"><b>Rejection Reason</b></label>
+                            <textarea class="form-control" id="notificationMessage" rows="4" placeholder="Explain the reason for rejecting this broker application" required></textarea>
+                            </div>
+
+                        <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><b>Process Rejection & Refund</b></button>
+                        </div>
+                    </form>
+                    </div>
+                    
+                </div>
+                </div>
+                </div>
+            </div> 
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggler = document.getElementById('sidebarToggler');
+        const pendingContainer = document.getElementById('pending');
+        const approvedContainer = document.getElementById('approved');
+        const rejectedContainer = document.getElementById('rejected');
+        const rejectModal = new bootstrap.Modal(document.getElementById('rejectModal'));
+        let currentRejectButton = null;
+
+        function toggleSidebar(e) {
+            e.stopPropagation();
+            sidebar.classList.toggle('active');
+            sidebarToggler.style.display = sidebar.classList.contains('active') ? 'none' : 'block';
+        }
+
+        function handleOutsideClick(e) {
+            if (window.innerWidth <= 992 && sidebar.classList.contains('active') &&
+                !sidebar.contains(e.target) && e.target !== sidebarToggler) {
+                sidebar.classList.remove('active');
+                sidebarToggler.style.display = 'block';
+            }
+        }
+
+        function setActiveTab(tab) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.tab-button[onclick="setActiveTab('${tab}')"]`).classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+        }
+
+        function updateCounts() {
+            document.getElementById('pendingCount').textContent = pendingContainer.children.length;
+            document.getElementById('approvedCount').textContent = approvedContainer.children.length;
+            document.getElementById('rejectedCount').textContent = rejectedContainer.children.length;
+        }
+
+        function showRejectModal(button) {
+            currentRejectButton = button;
+            document.getElementById('rejectionReason').value = '';
+            rejectModal.show();
+        }
+
+        function handleAction(action, reason = '') {
+            const card = this.closest('.card-attached');
+            const statusMessage = card.querySelector('.status-message');
+            const brokerName = card.querySelector('h5').textContent.split(' ')[0];
+            let targetContainer;
+
+            card.dataset.status = action;
+            if (action === 'approve' || action === 'reconsider') {
+                targetContainer = approvedContainer;
+                statusMessage.style.color = 'green';
+                statusMessage.textContent = `${brokerName}'s application has been ${action === 'approve' ? 'approved' : 'reconsidered'}!`;
+
+                const rejectedBadge = card.querySelector('.rejected-badge');
+                if (rejectedBadge) rejectedBadge.remove();
+                const reasonDiv = card.querySelector('.rejection-reason');
+                if (reasonDiv) reasonDiv.remove();
+
+                if (!card.querySelector('.approved-badge')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'approved-badge';
+                    badge.textContent = 'Approved';
+                    card.querySelector('.d-flex.align-items-center').appendChild(badge);
+                }
+            } else if (action === 'reject') {
+                targetContainer = rejectedContainer;
+                statusMessage.style.color = 'red';
+                statusMessage.textContent = `${brokerName}'s application has been rejected.`;
+
+                const approvedBadge = card.querySelector('.approved-badge');
+                if (approvedBadge) approvedBadge.remove();
+
+                if (!card.querySelector('.rejected-badge')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'rejected-badge';
+                    badge.textContent = 'Rejected';
+                    card.querySelector('.d-flex.align-items-center').appendChild(badge);
+                }
+
+                let reasonDiv = card.querySelector('.rejection-reason');
+                if (!reasonDiv) {
+                    reasonDiv = document.createElement('div');
+                    reasonDiv.className = 'rejection-reason';
+                    card.querySelector('.card-right').appendChild(reasonDiv);
+                }
+                reasonDiv.textContent = `Reason: ${reason}`;
+            } else if (action === 'processRefund') {
+                statusMessage.style.color = 'orange';
+                statusMessage.textContent = `Refund processed for ${brokerName}.`;
+                card.querySelector('.card-right [strong="Refund:"]').nextSibling.textContent = 'Processed';
+                const refundButton = this;
+                refundButton.disabled = true;
+                refundButton.textContent = 'Refund Processed';
+                refundButton.classList.remove('btn-warning');
+                refundButton.classList.add('btn-secondary');
+            }
+
+            if (action !== 'processRefund') {
+                const actionButtons = card.querySelector('.d-flex.gap-2.mt-3');
+                if (actionButtons) actionButtons.remove();
+
+                targetContainer.appendChild(card);
+            }
+
+            statusMessage.style.display = 'block';
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000);
+
+            if (action !== 'processRefund') {
+                updateCounts();
+                setActiveTab(action === 'approve' || action === 'reconsider' ? 'approved' : 'rejected');
+            }
+        }
+
+        function searchBrokers(query) {
+            const activeTab = document.querySelector('.tab-content.active').id;
+            const container = document.getElementById(activeTab);
+            const cards = container.querySelectorAll('.card-attached');
+
+            cards.forEach(card => {
+                const brokerName = card.querySelector('h5').textContent.toLowerCase();
+                card.style.display = brokerName.includes(query.toLowerCase()) ? 'block' : 'none';
+            });
+        }
+
+        document.getElementById('confirmReject').addEventListener('click', () => {
+            const reason = document.getElementById('rejectionReason').value.trim();
+            if (reason.length < 10) {
+                alert('Please provide a reason with at least 10 characters.');
+                return;
+            }
+            handleAction.call(currentRejectButton, 'reject', reason);
+            rejectModal.hide();
+        });
+
+        function updateLayout() {
+            if (window.innerWidth <= 992) {
+                sidebar.classList.remove('active');
+                sidebarToggler.style.display = 'block';
+            } else {
+                sidebar.classList.add('active');
+                sidebarToggler.style.display = 'none';
+            }
+        }
+
+        window.addEventListener('resize', updateLayout);
+        window.addEventListener('DOMContentLoaded', () => {
+            updateLayout();
+            updateCounts();
+            setActiveTab('rejected'); // Set default to 'rejected' to see Amit Singh card
+        });
+
+
+
+
+          //logout redirect to login page
+  function handleLogout() {
+      const confirmLogout = confirm("Are you sure you want to logout?");
+      if (confirmLogout) {
+        localStorage.removeItem("token");
+
+        window.location.href = "./admin_login.html";
+      }
+    }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

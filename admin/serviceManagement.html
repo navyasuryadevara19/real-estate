@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* General Layout */
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+        flex-direction: row;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 260px;
+      background-color: #1e3a8a;
+      color: white;
+      transition: width 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar.collapsed {
+      width: 60px;
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 14px 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 5px 0;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #3b82f6;
+      border-radius: 10px;
+    }
+
+    .sidebar-toggler {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1000;
+      display: none;
+    }
+
+    .admin-footer {
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .logout-btn {
+      background-color: #3b82f6;
+      border: none;
+      padding: 5px 10px;
+      color: white;
+      border-radius: 5px;
+    }
+
+
+    /* Main Content */
+    .main-content {
+      padding: 1.6rem;
+      width: 100%;
+      margin-left: 260px;
+      flex: 1;
+      transition: margin-left 0.3s ease;
+      background-color: #f5f7fa;
+    
+    }
+
+
+    /* Cards */
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background-color: #fff;
+    }
+
+    .badge-status {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      border-radius: 20px;
+    }
+
+    .badge-pending {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    .badge-completed {
+      background-color: #28a745;
+      color: #fff;
+    }
+
+    /* Inquiry Cards */
+    .inquiry-cards {
+      display: none;
+    }
+
+    .inquiry-cards .card {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar-toggler {
+        display: block;
+      }
+
+      .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        transform: translateX(0);
+      }
+
+      .sidebar.hidden {
+        transform: translateX(-100%);
+    }
+  }
+  /* Responsive */
+  @media (max-width: 991px) {
+
+    .main-content {
+      margin-left: 0;
+      padding-top: 40px;
+    }
+
+    .sidebar-toggler {
+      display: block;
+    }
+
+    .inquiry-cards {
+      display: block;
+    }
+
+    
+
+    .form-control.w-25 {
+      width: 100% !important;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .modal-dialog {
+      max-width: 95%;
+      margin: 1.75rem auto;
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+    }
+
+    .row.g-3 > div {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+      transform: translateX(0);
+    }
+
+    .sidebar-toggler {
+      display: flex;
+    }
+  }
+  @media (max-width: 768px) {
+      .sidebar-toggler {
+        display: block;
+      }
+
+      .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        transform: translateX(0);
+      }
+
+      .sidebar.hidden {
+        transform: translateX(-100%);
+      }
+
+      .main-content {
+        margin-left: 0 !important;
+        margin-top: 15px;
+      }
+     
+    }
+
+
+.table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background-color: #e9ecef;
+            padding: 0.75rem;
+            text-align: center;
+            color: #495057;
+            font-weight: 500;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 0.75rem;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+
+        .table td:first-child {
+            text-align: left;
+        }
+
+        .property-name {
+            font-weight: bold;
+            color: #212529;
+        }
+
+        .property-address {
+            color: #dbdbdc;
+            font-size: 0.85rem;
+        }
+        .divv .btn{
+          background-color: #e9ecef;
+          border-radius: 2px;
+          box-shadow:2px 2px 10px silver;
+        }
+        .divv .btn:hover{
+          background-color: #3b82f6;
+        }
+
+</style>
+
+</head>
+
+
+<body>
+  <!-- Sidebar Toggle Button -->
+  <button id="sidebarToggler" class="btn btn-primary sidebar-toggler" onclick="toggleSidebar(event)">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="layout" onclick="handleOutsideClick(event)">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar d-flex flex-column justify-content-between p-3" onclick="event.stopPropagation()">
+      <div>
+        <a href="./admin_dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+        <a href="./brokerManagement.html"><i class="fas fa-user-tie me-2"></i>Broker Management</a>
+        <a href="./propertyManagement.html"><i class="fas fa-building me-2"></i>Property Management</a>
+        <a class="active" href="./serviceManagement.html"><i class="fas fa-tools me-2"></i>Service Management</a>
+        <a href="./paymentManagement.html"><i class="fas fa-credit-card me-2"></i>Payment Management</a>
+        <a href="./supportManagement.html"><i class="fas fa-headset me-2"></i>Support Management</a>
+        <a href="./notifications.html"><i class="fas fa-bell me-2"></i>Notifications</a>
+        <a href="./acc_settings.html"><i class="fas fa-user-cog me-2"></i>Account Settings</a>
+      </div>
+      <div class="admin-footer">
+        <div class=" mb-2">
+          <strong>Admin</strong><br />
+          <small style="word-break: break-all;">propertysradmin@gmail.com</small>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()" title="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+          </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Moved Service Management Heading here -->
+        <div class="pt-3">
+          <h2 class="mb-3">Service Management</h2>
+          <p class="text-muted">Manage customer inquiries for packers & movers and construction materials</p>
+        </div>
+
+      <!-- Dashboard Cards -->
+      <div class="row g-3">
+        <div class="col-sm-6 col-md-4">
+          <div class="card p-3 text-center">
+            <h6><i class="fas fa-tasks me-2 text-primary"></i>Active Inquiries</h6>
+            <h3>2</h3>
+            <small class="text-success">+8% from previous month</small>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card p-3 text-center">
+            <h6><i class="fas fa-users me-2 text-success"></i>Service Providers</h6>
+            <h3>4</h3>
+            <small class="text-success">+5% from previous month</small>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card p-3 text-center">
+            <h6><i class="fas fa-check-circle me-2 text-info"></i>Completed Services</h6>
+            <h3>2</h3>
+            <small class="text-success">+12% from previous month</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inquiries -->
+      <div class="d-flex justify-content-between align-items-center my-4">
+        <h3>Service Inquiries</h3>
+        <!-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inquiryModal">+ Add New Inquiry</button> -->
+      </div>
+      <p>Manage customer inquiries for different services</p>
+   
+      <div class="mb-3">
+        <input type="text" class="form-control w-50" placeholder="Search inquiries..." />
+      </div >
+      
+      
+      <!-- Tabs Navigation -->
+      <div class="mb-4 d-flex justify-content-evenly divv">
+        <button class="btn  w-50" onclick="showTab('tab-packers')">Packers & Movers</button>
+        <button class="btn  w-50" onclick="showTab('tab-construction')">Construction Materials</button>
+      </div>
+      
+      
+    <!-- Packers & Movers Tab -->
+      <div id="tab-packers" class="tab-content">
+        <div class="d-flex justify-content-end mb-3">
+          <button class="btn btn-primary " onclick="openPackersModal()">+ Add New Inquiry</button>
+        </div>
+        <div class="table-responsive">
+        <table class="table table-hover border-0 align-middle">
+          <thead class="table-light ">
+            <tr>
+              <th>Customer</th>
+              <th>Contact</th>
+              <th>Location</th>
+              <th>Vehicle & Packers</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="packersTableBody" class="border-0">
+            <tr class="border">
+              <td>Rahul Sharma</td>
+              <td>+91 9876543210<br><small class="text-muted">+91 9876543211</small></td>
+              <td>From: Bandra West, Mumbai (3rd Floor)<br>To: Andheri East, Mumbai (5th Floor)</td>
+              <td>Vehicle: Small Truck<br>Packers: 3</td>
+              <td>28/3/2025</td>
+              <td><span class="badge bg-warning text-dark">Pending</span></td>
+              <td><button class="btn btn-primary btn-sm">Assign Workers</button></td>
+            </tr>
+            <tr class="border">
+              <td>Priya Patel</td>
+              <td>+91 8765432190<br><small class="text-muted">+91 8765432199</small></td>
+              <td>From: Koramangala, Bengaluru (2nd Floor)<br>To: HSR Layout, Bengaluru (1st Floor)</td>
+              <td>Vehicle: Medium Truck<br>Packers: 4</td>
+              <td>27/3/2025</td>
+              <td><span class="badge bg-success">Completed</span><br><small>Assigned to: Agarwal Packers & Movers</small></td>
+              <td><button class="btn btn-outline-secondary btn-sm">View Details</button></td>
+            </tr>
+            <tr class="border">
+              <td>Suresh Kumar</td>
+              <td>+91 7654321098<br><small class="text-muted">+91 7654321098</small></td>
+              <td>From: Connaught Place, Delhi (1st Floor)<br>To: Dwarka, Delhi (4th Floor)</td>
+              <td>Vehicle: Large Truck<br>Packers: 5</td>
+              <td>25/3/2025</td>
+              <td><span class="badge bg-success">Completed</span><br><small>Assigned to: Steve Logistics & Movers</small></td>
+              <td><button class="btn btn-outline-secondary btn-sm">View Details</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <!-- Inquiry Modal -->
+        <div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <form id="inquiryForm" onsubmit="submitPackersForm(event)">
+                <div class="modal-header">
+                  <h5 class="modal-title fw-bold" id="inquiryModalLabel">New Packers & Movers Inquiry</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p class="text-muted">Fill in the details for packers & movers service inquiry.</p>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label>Customer Name</label>
+                      <input type="text" class="form-control" name="name" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label>Phone Number</label>
+                      <input type="tel" class="form-control" name="phone" required pattern="^\+?\d{10,13}$" />
+                    </div>
+                    <div class="col-md-6">
+                      <label>Alternate Number (Optional)</label>
+                      <input type="tel" class="form-control" name="altPhone" />
+                    </div>
+                    <div class="col-md-6">
+                      <label>Pickup Location</label>
+                      <input type="text" class="form-control" name="pickup" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label>Drop Location</label>
+                      <input type="text" class="form-control" name="drop" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label>Pickup Floor</label>
+                      <input type="text" class="form-control" name="pickupFloor" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label>Drop Floor</label>
+                      <input type="text" class="form-control" name="dropFloor" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label>Vehicle Type</label>
+                      <select class="form-select" name="vehicle" required>
+                        <option value="">Select vehicle type</option>
+                        <option>Small Truck</option>
+                        <option>Medium Truck</option>
+                        <option>Large Truck</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label>Number of Packers</label>
+                      <select class="form-select" name="packers" required>
+                        <option value="">Select number</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Submit Inquiry</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>  
+
+    <!-- Construction Materials Tab -->
+    <div id="tab-construction" class="tab-content ">
+      
+      <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-primary " onclick="openConstructionModal()">+ Add New Inquiry</button>
+      </div>
+      <!-- Desktop Table View -->
+      <div class="table-responsive  d-md-block">
+        <table class="table table-hover ">
+          <thead class="table-light">
+            <tr>
+              <th>Customer</th>
+              <th>Contact</th>
+              <th>Location</th>
+              <th>Building Materials</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Vikram Mehta</td>
+              <td>
+                +91 9871234567<br />
+                <small class="text-muted">+91 9871234568</small>
+              </td>
+              <td>Powai, Mumbai</td>
+              <td>
+                Cement, Sand, Steel<br />
+                <small class="text-muted">Note: Need materials for house renovation</small>
+              </td>
+              <td>29/3/2025</td>
+              <td><span class="badge bg-warning text-dark">Pending</span></td>
+              <td><button class="btn btn-outline-primary btn-sm">Mark Contacted</button></td>
+            </tr>
+            <tr>
+              <td>Anjali Gupta</td>
+              <td>+91 8765987654<br />
+                <small class="text-muted">+91 8765987654</small></td>
+              <td>Indira Nagar, Bengaluru</td>
+              <td>
+                Bricks, Cement, Tiles<br />
+                <small class="text-muted">Note: Building a small extension</small>
+              </td>
+              <td>26/3/2025</td>
+              <td><span class="badge bg-info text-dark">Contacted</span></td>
+              <td><button class="btn btn-primary btn-sm">Mark In Progress</button></td>
+            </tr>
+            <tr>
+              <td>Rajesh Khanna</td>
+              <td>
+                +91 7651234567<br />
+                <small class="text-muted">+91 7651234568</small>
+              </td>
+              <td>Sector 62, Noida</td>
+              <td>
+                RCC, TMT Bars, Cement<br />
+                <small class="text-muted">Note: Construction of boundary wall</small>
+              </td>
+              <td>24/3/2025</td>
+              <td><span class="badge bg-primary">In Progress</span></td>
+              <td><button class="btn btn-outline-dark btn-sm">Mark Complete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Construction Inquiry Modal -->
+      <div class="modal fade" id="constructionInquiryModal" tabindex="-1" aria-labelledby="constructionInquiryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content p-3">
+            <div class="modal-header">
+              <h5 class="modal-title" id="constructionInquiryModalLabel">New Construction Materials Inquiry</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="constructionInquiryForm" onsubmit="submitConstructionForm(event)">
+              <div class="modal-body">
+                <p class="text-muted">Fill in the details for construction materials inquiry.</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                      <label>Customer Name</label>
+                      <input type="text" class="form-control" name="name" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label>Phone Number</label>
+                      <input type="num" class="form-control" name="name" required />
+                    </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Alternate Number (Optional)</label>
+                    <input type="tel" class="form-control" name="altPhoneNumber">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-control" name="location" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Building Materials Needed</label>
+                    <textarea class="form-control" name="materials" rows="2" required placeholder="E.g., Cement, Sand, Bricks, Steel, etc."></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Additional Information (Optional)</label>
+                    <textarea class="form-control" name="additionalInfo" rows="2" placeholder="Any other details about your requirements"></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Submit Inquiry</button>
+                </div>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+      
+      
+
+     
+      </div>
+    </div>
+  </div>
+
+  <script>
+   
+    // Sidebar Logic
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggler = document.getElementById('sidebarToggler');
+  
+    function toggleSidebar(e) {
+      e.stopPropagation();
+      sidebar.classList.toggle('hidden');
+      sidebarToggler.style.display = sidebar.classList.contains('hidden') ? 'block' : 'none';
+    }
+  
+    function handleOutsideClick(e) {
+      if (window.innerWidth <= 768 && !sidebar.classList.contains('hidden')) {
+        sidebar.classList.add('hidden');
+        sidebarToggler.style.display = 'block';
+      }
+    }
+  
+    function updateSidebarView() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.add('hidden');
+        sidebarToggler.style.display = 'block';
+      } else {
+        sidebar.classList.remove('hidden');
+        sidebarToggler.style.display = 'none';
+      }
+    }
+  
+    window.addEventListener('resize', updateSidebarView);
+    window.addEventListener('DOMContentLoaded', updateSidebarView);
+  
+    document.addEventListener('click', function(e) {
+    if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !sidebarToggler.contains(e.target)) {
+      sidebar.classList.add('hidden');
+      sidebarToggler.style.display = 'block';
+    }
+  });
+  
+  
+    </script>
+     
+  
+  <script>
+    // Helper: Show alert
+    function showAlert(message, type = "success") {
+      const alert = document.createElement("div");
+      alert.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+      alert.style.zIndex = 1055;
+      alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      document.body.appendChild(alert);
+  
+      // Auto-dismiss after 4 seconds
+      setTimeout(() => {
+        bootstrap.Alert.getOrCreateInstance(alert).close();
+      }, 4000);
+    }
+  
+    // Open Packers Modal
+    function openPackersModal() {
+      document.getElementById("inquiryForm").reset();
+      const modal = new bootstrap.Modal(document.getElementById("inquiryModal"));
+      modal.show();
+    }
+  
+    // Open Construction Modal
+    function openConstructionModal() {
+      document.getElementById("constructionInquiryForm").reset();
+      const modal = new bootstrap.Modal(document.getElementById("constructionInquiryModal"));
+      modal.show();
+    }
+  
+    // Packers Form Submission
+    function submitPackersForm(event) {
+      event.preventDefault();
+      const form = event.target;
+  
+      if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        return;
+      }
+  
+      const name = form.name.value.trim();
+      const phone = form.phone.value.trim();
+      const altPhone = form.altPhone.value.trim();
+      const pickup = form.pickup.value.trim();
+      const drop = form.drop.value.trim();
+      const pickupFloor = form.pickupFloor.value.trim();
+      const dropFloor = form.dropFloor.value.trim();
+      const vehicle = form.vehicle.value;
+      const packers = form.packers.value;
+  
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${name}</td>
+        <td>${phone}<br><small class="text-muted">${altPhone || ''}</small></td>
+        <td>From: ${pickup} (${pickupFloor})<br>To: ${drop} (${dropFloor})</td>
+        <td>Vehicle: ${vehicle}<br>Packers: ${packers}</td>
+        <td>${new Date().toLocaleDateString('en-GB')}</td>
+        <td><span class="badge bg-warning text-dark">Pending</span></td>
+        <td><button class="btn btn-primary btn-sm">Assign Workers</button></td>
+      `;
+  
+      document.getElementById("packersTableBody").appendChild(row);
+  
+      // Close modal, reset form, and alert
+      bootstrap.Modal.getInstance(document.getElementById("inquiryModal")).hide();
+      form.reset();
+      form.classList.remove("was-validated");
+      showAlert("Packers & Movers inquiry submitted successfully!");
+    }
+  
+    // Construction Form Submission
+    function submitConstructionForm(event) {
+      event.preventDefault();
+      const form = event.target;
+  
+      if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        return;
+      }
+  
+      const name = form.customerName.value.trim();
+      const phone = form.phoneNumber.value.trim();
+      const altPhone = form.altPhoneNumber.value.trim();
+      const location = form.location.value.trim();
+      const materials = form.materials.value.trim();
+      const additionalInfo = form.additionalInfo.value.trim();
+  
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${name}</td>
+        <td>${phone}<br><small class="text-muted">${altPhone || ''}</small></td>
+        <td>${location}</td>
+        <td>${materials}<br><small class="text-muted">Note: ${additionalInfo || 'N/A'}</small></td>
+        <td>${new Date().toLocaleDateString('en-GB')}</td>
+        <td><span class="badge bg-warning text-dark">Pending</span></td>
+        <td><button class="btn btn-outline-primary btn-sm">Mark Contacted</button></td>
+      `;
+  
+      document.querySelector("#tab-construction tbody").appendChild(row);
+  
+      bootstrap.Modal.getInstance(document.getElementById("constructionInquiryModal")).hide();
+      form.reset();
+      form.classList.remove("was-validated");
+      showAlert("Construction Materials inquiry submitted successfully!");
+    }
+  </script>
+  
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('d-none');
+      });
+      document.getElementById(tabId).classList.remove('d-none');
+    }
+  
+    function openPackersModal() {
+      const modalEl = document.getElementById("inquiryModal");
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }
+  
+    function openConstructionModal() {
+      const modalEl = document.getElementById("constructionInquiryModal");
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }
+  
+    document.addEventListener("DOMContentLoaded", function () {
+      showTab('tab-packers'); // Show this one by default
+    });
+
+
+      //logout redirect to login page
+  function handleLogout() {
+      const confirmLogout = confirm("Are you sure you want to logout?");
+      if (confirmLogout) {
+        localStorage.removeItem("token");
+
+        window.location.href = "./admin_login.html";
+      }
+    }
+  </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
