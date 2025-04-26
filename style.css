@@ -694,7 +694,7 @@ h1 {
         
         /* 1 box per row on mobile */
     }
-
+  
     .container {
         display: none;
     }
@@ -1204,7 +1204,7 @@ p {
 
     .contact-button {
         font-size: 14px;
-        padding: 8px 12px;
+        padding: 8px 15px;
     }
 }
 
